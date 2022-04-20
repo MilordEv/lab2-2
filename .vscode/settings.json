@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "config": "c",
+        "algorithm": "cpp",
+        "vector": "cpp"
+    }
+}
