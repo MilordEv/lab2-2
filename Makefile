@@ -4,7 +4,7 @@ CFLAGS = -c -Wall
 
 LDFLAGS =
 
-SRCS = test.cpp
+SRCS = test.cpp DynamicArray.hpp
 
 OBJS = $(SRCS:.c=.o)
 
@@ -19,4 +19,4 @@ $(EXE): $(OBJS)
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
-	rm -rf $(OBJS) $(EXE)
+	rm -rf $(EXE)

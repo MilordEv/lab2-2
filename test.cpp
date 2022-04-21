@@ -1,4 +1,5 @@
 #include <iostream>
+#include "DynamicArray.hpp"
 
 using namespace std;
 
