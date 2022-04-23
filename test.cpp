@@ -1,5 +1,6 @@
 #include <iostream>
 #include "DynamicArray.hpp"
+#include "ArraySequence.hpp"
 
 using namespace std;
 

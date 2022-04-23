@@ -1,7 +1,6 @@
 #ifndef __DYNAMICARRAY__
 #define __DYNAMICARRAY__
 
-#include <iostream>
 #include <cstring>
 #include <stdexcept>
 
@@ -10,7 +9,7 @@ class DynamicArray {
 
     private:
         T* items;
-        size_t count;
+        size_t capacity;
 
     public:
        DynamicArray(T* items, int count);
@@ -31,30 +30,26 @@ template <typename T>
 DynamicArray<T>::DynamicArray(T* items, int count) {
     this->items = new T[count];
     memcpy(this->items, items, count * sizeof(T));
-    this->count = count;
+    this->capacity = count;
 }
 
 template <typename T>
-DynamicArray<T>::DynamicArray(int size) : count(size) {
+DynamicArray<T>::DynamicArray(int size) : capacity(size) {
     this->items = new T[size];
 }
 
 template <typename T>
-DynamicArray<T>::DynamicArray() : count(0), items(nullptr) {}
+DynamicArray<T>::DynamicArray() : capacity(0), items(nullptr) {}
 
 template <typename T>
 DynamicArray<T>::DynamicArray(const DynamicArray<T> &dynamicArray) {
 
-    std::cout << "zero" << std::endl;
+    this->capacity = dynamicArray.capacity;
 
-    this->count = dynamicArray.count;
-
-    if (this->count) {
-        this->items = new T[this->count];
-        memcpy(this->items, dynamicArray.items, this->count * sizeof(T));
-        std::cout << "second" << std::endl;
+    if (this->capacity) {
+        this->items = new T[this->capacity];
+        memcpy(this->items, dynamicArray.items, this->capacity * sizeof(T));
     } else {
-        std::cout << "third" << std::endl;
         this->items = nullptr;
     }
 }
@@ -70,7 +65,7 @@ DynamicArray<T>::~DynamicArray() {
 
 template <typename T>
 T DynamicArray<T>::Get(int index) {
-    if (index >= this->count || index < 0)  {
+    if (index >= this->capacity || index < 0)  {
         throw std::out_of_range("Out of the range of the array");
     } else {
         return this->items[index];
@@ -79,16 +74,17 @@ T DynamicArray<T>::Get(int index) {
 
 template <typename T>
 size_t DynamicArray<T>::GetSize() {
-    return this->count;
+    return this->capacity;
 }
 
 template <typename T>
 void DynamicArray<T>::Set(int index, T value) {
-    if (index >= this->count || index < 0)  {
+    if (index >= this->capacity || index < 0)  {
         throw std::out_of_range("Out of the range of the array");
     }
 
     memcpy(this->items + index, &value, sizeof(T));
+    return;
 }
 
 template <typename T>
@@ -99,7 +95,7 @@ void DynamicArray<T>::Resize(int newSize) {
 
     if (newSize) {
         T* bufer = new T[newSize];
-        memcpy(bufer, this->items, this->count * sizeof(T));
+        memcpy(bufer, this->items, this->capacity * sizeof(T));
         delete[] this->items;
         this->items = bufer;
     } else {
@@ -107,7 +103,8 @@ void DynamicArray<T>::Resize(int newSize) {
         this->items = nullptr;
     }
     
-    this->count = newSize;
+    this->capacity = newSize;
+    return;
 }
 
 #endif
