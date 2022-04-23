@@ -4,7 +4,7 @@ CFLAGS = -c -Wall
 
 LDFLAGS =
 
-SRCS = test.cpp DynamicArray.hpp
+SRCS = test.cpp 
 
 OBJS = $(SRCS:.c=.o)
 

@@ -20,11 +20,12 @@ class ArraySequence : public Sequence<T> {
         T GetLast() override;
         T Get(int index) override;
         int GetLength() override;
-        Sequence<T>* GetSubsequence(int startIndex, int endIndex) override;
+        ArraySequence<T>* GetSubsequence(int startIndex, int endIndex) override;
 
         void Append(T item) override;
         void Prepend(T item) override;
         void InsertAt(T item, int index) override;
+        void Remove(int index) override;
         ArraySequence<T>* Concat(Sequence <T> *list) override;
 
         ~ArraySequence() override;
@@ -95,10 +96,10 @@ int ArraySequence<T>::GetLength() {
 }
 
 template<typename T>
-Sequence<T>* ArraySequence<T>::GetSubsequence(int startIndex, int endIndex) {
+ArraySequence<T>* ArraySequence<T>::GetSubsequence(int startIndex, int endIndex) {
     T* items = new T[endIndex - startIndex + 1];
     for (int i = startIndex; i <= endIndex; i++) {
-        items[i] = this->items->Get(i);
+        items[i - startIndex] = this->items->Get(i);
     }
 
     ArraySequence<T>* newArraySequence = new ArraySequence(items, endIndex - startIndex + 1);
@@ -114,7 +115,7 @@ void ArraySequence<T>::Append(T item) {
             this->items->Resize(2);
         }
 
-        this->items->Resize(2 * this->items->GetSize());
+        this->items->Resize(2 * this->count);
     }
 
     this->items->Set(count, item);
@@ -129,11 +130,11 @@ void ArraySequence<T>::Prepend(T item) {
             this->items->Resize(2);
         }
 
-        this->items->Resize(2 * this->items->GetSize());
+        this->items->Resize(2 * this->count);
     }
 
-    for (int i = 0; i < this->count; i++) {
-        this->items->Set(i+1, this->items->Get(i));
+    for (int i = this->count; i > 0; i--) {
+        this->items->Set(i, this->items->Get(i-1));
     }
 
     this->items->Set(0, item);
@@ -152,11 +153,11 @@ void ArraySequence<T>::InsertAt(T item, int index) {
             this->items->Resize(2);
         }
 
-        this->items->Resize(2 * this->items->GetSize());
+        this->items->Resize(2 * this->count);
     }
 
-    for (int i = index; i < this->count; i++) {
-        this->items->Set(i+1, this->items->Get(i));
+    for (int i = this->count; i > index; i--) {
+        this->items->Set(i, this->items->Get(i-1));
     }
 
     this->items->Set(index, item);
@@ -165,13 +166,26 @@ void ArraySequence<T>::InsertAt(T item, int index) {
 }
 
 template<typename T>
-ArraySequence<T>* ArraySequence<T>::Concat(Sequence <T> *list) {
+void ArraySequence<T>::Remove(int index) {
+    if (index >= this->count || index < 0) {
+        throw std::out_of_range("Out of the range of the array");
+    }
+
+    for (int i = index; i < count - 1; i++) {
+        this->items->Set(i, this->items->Get(i+1));
+    }
+
+    this->count -= 1;
+}
+
+template<typename T>
+ArraySequence<T>* ArraySequence<T>::Concat(Sequence<T> *list) {
     if ((this->count + list->GetLength()) > this->items->GetSize()) {
         this->items->Resize(this->count + list->GetLength());
     }
 
     for (int i = this->count; i < this->count + list->GetLength(); i++) {
-        this->items->Set(i, list->Get(i));
+        this->items->Set(i, list->Get(i - this->count));
     }
 
     this->count += list->GetLength();
