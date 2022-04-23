@@ -47,7 +47,7 @@ int main() {
     }
     cout << endl;
 
-    ArraySequence<int>* example2 = example1->GetSubsequence(4, example1->GetLength() - 1);
+    ArraySequence<int>* example2 = (ArraySequence<int>*) example1->GetSubsequence(4, example1->GetLength() - 1);
 
     for (int i = 0; i < example2->GetLength(); i++) {
         cout << example2->Get(i) << " ";

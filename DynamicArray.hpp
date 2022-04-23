@@ -19,7 +19,6 @@ class DynamicArray {
 
        ~DynamicArray();
 
-    public:
         T Get(int index);
         size_t GetSize();
         void Set(int index, T value);
@@ -67,9 +66,10 @@ template <typename T>
 T DynamicArray<T>::Get(int index) {
     if (index >= this->capacity || index < 0)  {
         throw std::out_of_range("Out of the range of the array");
-    } else {
-        return this->items[index];
-    }
+    } 
+        
+    return this->items[index];
+    
 }
 
 template <typename T>

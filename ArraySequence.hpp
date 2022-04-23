@@ -20,7 +20,7 @@ class ArraySequence : public Sequence<T> {
         T GetLast() override;
         T Get(int index) override;
         int GetLength() override;
-        ArraySequence<T>* GetSubsequence(int startIndex, int endIndex) override;
+        Sequence<T>* GetSubsequence(int startIndex, int endIndex) override;
 
         void Append(T item) override;
         void Prepend(T item) override;
@@ -63,6 +63,7 @@ ArraySequence<T>::~ArraySequence() {
 
 
 
+
 template<typename T>
 T ArraySequence<T>::GetFirst() {
     if (!(this->count)) {
@@ -96,7 +97,7 @@ int ArraySequence<T>::GetLength() {
 }
 
 template<typename T>
-ArraySequence<T>* ArraySequence<T>::GetSubsequence(int startIndex, int endIndex) {
+Sequence <T>* ArraySequence<T>::GetSubsequence(int startIndex, int endIndex) {
     T* items = new T[endIndex - startIndex + 1];
     for (int i = startIndex; i <= endIndex; i++) {
         items[i - startIndex] = this->items->Get(i);
@@ -173,6 +174,10 @@ void ArraySequence<T>::Remove(int index) {
 
     for (int i = index; i < count - 1; i++) {
         this->items->Set(i, this->items->Get(i+1));
+    }
+
+    if (this->count < (this->items->GetSize() / 3)) {
+        this->items->Resize(this->items->GetSize() / 3);
     }
 
     this->count -= 1;
