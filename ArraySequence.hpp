@@ -98,6 +98,10 @@ int ArraySequence<T>::GetLength() {
 
 template<typename T>
 Sequence <T>* ArraySequence<T>::GetSubsequence(int startIndex, int endIndex) {
+    if (startIndex >= this->count || startIndex < 0 || endIndex >= this->count || endIndex < 0) {
+        throw std::out_of_range("Out of the range of the array");
+    }
+
     T* items = new T[endIndex - startIndex + 1];
     for (int i = startIndex; i <= endIndex; i++) {
         items[i - startIndex] = this->items->Get(i);
