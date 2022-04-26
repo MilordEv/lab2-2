@@ -8,8 +8,10 @@ template <typename T>
 class LinkedList {
     private:
         class Item {
-            T value;
-            Item* next;
+            public:
+                T value;
+                Item* next;
+                Item() {}
         };
 
         Item* head;
@@ -31,7 +33,7 @@ class LinkedList {
 
         void Append(T item);
         void Prepend(T item);
-        void InsertAt(int index, T item);
+        void InsertAt(T item, int index);
         void Remove(int index);
         LinkedList<T>* Concat(LinkedList<T> *list);
 
@@ -42,6 +44,9 @@ LinkedList<T>::LinkedList(T* items, int count) {
     if (count == 0) {
         LinkedList();
     } else {
+        this->length = 0;
+        this->head = nullptr;
+        this->tail = nullptr;
         for (int i = 0; i < count; i++) {
             this->Append(items[i]);
         }
@@ -75,13 +80,11 @@ LinkedList<T>::LinkedList(const LinkedList<T> &linkedList) {
 
 template <typename T>
 LinkedList<T>::~LinkedList() {
-    if (!(this->length)) {
-        Item* ptr = this->head;
-        while (ptr) {
-            Item* deleteItem = ptr;
-            ptr = ptr->next;
-            delete deleteItem;
-        }
+    Item* ptr = this->head;
+    while (ptr) {
+        Item* deleteItem = ptr;
+        ptr = ptr->next;
+        delete deleteItem;
     }
 }
 
@@ -144,7 +147,7 @@ LinkedList<T>* LinkedList<T>::GetSubList(int startIndex, int endIndex) {
         ptr = ptr->next;
     }
 
-    for (int i = startIndex; i < endIndex; i++) {
+    for (int i = startIndex; i <= endIndex; i++) {
         subList->Append(ptr->value);
         ptr = ptr->next;
     }
@@ -159,7 +162,7 @@ LinkedList<T>* LinkedList<T>::GetSubList(int startIndex, int endIndex) {
 template <typename T>
 void LinkedList<T>::Append(T item) {
     Item* newItem = new Item;
-    newItem->value = item; 
+    memcpy(&(newItem->value), &item, sizeof(T)); 
     newItem->next = nullptr;
 
     if (this->tail) {
@@ -179,7 +182,7 @@ void LinkedList<T>::Append(T item) {
 template <typename T>
 void LinkedList<T>::Prepend(T item) {
     Item* newItem = new Item;
-    newItem->value = item;
+    memcpy(&(newItem->value), &item, sizeof(T));
     
     if (this->head) {
         newItem->next = this->head;
@@ -196,7 +199,7 @@ void LinkedList<T>::Prepend(T item) {
 }
 
 template <typename T>
-void LinkedList<T>::InsertAt(int index, T item) {
+void LinkedList<T>::InsertAt(T item, int index) {
     if (index >= this->length || index < 0)  {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -213,10 +216,10 @@ void LinkedList<T>::InsertAt(int index, T item) {
 
         Item* nextItem = new Item;
         nextItem->next = ptr->next;
-        nextItem->value = ptr->value;
+        memcpy(&(nextItem->value), &(ptr->value), sizeof(T));
 
         ptr->next = nextItem;
-        ptr->value = item;
+        memcpy(&(ptr->value), &item, sizeof(T));
         this->length += 1;
     }
 }

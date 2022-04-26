@@ -1,15 +1,16 @@
 #include <iostream>
-#include "DynamicArray.hpp"
-#include "LinkedList.hpp"
-#include "ArraySequence.hpp"
+//#include "ArraySequence.hpp"
+#include "ListSequence.hpp"
 
 using namespace std;
 
 int main() {
 
+    
+
     int array[] = {1, 2, 3, 4, 5};
 
-    ArraySequence<int>* example1 = new ArraySequence<int>(array, 5);
+    ListSequence<int>* example1 = new ListSequence<int>(array, 5);
 
     cout << example1->GetLength() << endl;
 
@@ -48,10 +49,15 @@ int main() {
     }
     cout << endl;
 
-    ArraySequence<int>* example2 = (ArraySequence<int>*) example1->GetSubsequence(4, example1->GetLength() - 1);
+    ListSequence<int>* example2 = (ListSequence<int>*) example1->GetSubsequence(4, example1->GetLength() - 1);
 
     for (int i = 0; i < example2->GetLength(); i++) {
         cout << example2->Get(i) << " ";
+    }
+    cout << endl;
+
+    for (int i = 0; i < example1->GetLength(); i++) {
+        cout << example1->Get(i) << " ";
     }
     cout << endl;
 

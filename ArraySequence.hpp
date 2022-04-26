@@ -28,7 +28,7 @@ class ArraySequence : public Sequence<T> {
         void Remove(int index) override;
         ArraySequence<T>* Concat(Sequence <T> *list) override;
 
-        ~ArraySequence() override;
+        ~ArraySequence();
 };
 
 template<typename T>
@@ -48,7 +48,7 @@ ArraySequence<T>::ArraySequence(const ArraySequence<T> &arraySequence) {
     this->count = arraySequence.count;
 
     if (this->count) {
-        this->items = new DynamicArray<T>(arraySequence.items);
+        this->items = new DynamicArray<T>(arraySequence.items, this->count);
     } else {
         this->items = new DynamicArray<T>();
     }
