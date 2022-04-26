@@ -4,7 +4,7 @@ CFLAGS = -c -Wall
 
 LDFLAGS =
 
-SRCS = test.cpp 
+SRCS = ATD.cpp 
 
 OBJS = $(SRCS:.c=.o)
 
