@@ -48,7 +48,7 @@ ArraySequence<T>::ArraySequence(const ArraySequence<T> &arraySequence) {
     this->count = arraySequence.count;
 
     if (this->count) {
-        this->items = new DynamicArray<T>(arraySequence.items, this->count);
+        this->items = new DynamicArray<T>(arraySequence.items);
     } else {
         this->items = new DynamicArray<T>();
     }
@@ -116,11 +116,13 @@ Sequence <T>* ArraySequence<T>::GetSubsequence(int startIndex, int endIndex) {
 template<typename T>
 void ArraySequence<T>::Append(T item) {
     if (this->count >= this->items->GetSize()) {
+
         if (!(this->count)) {
             this->items->Resize(2);
-        }
 
-        this->items->Resize(2 * this->count);
+        } else {
+            this->items->Resize(2 * this->count);
+        }
     }
 
     this->items->Set(count, item);

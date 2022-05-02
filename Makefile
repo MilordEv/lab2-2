@@ -4,7 +4,7 @@ CFLAGS = -c -Wall
 
 LDFLAGS =
 
-SRCS = ATD.cpp 
+SRCS = testOrthogonalMatrix.cpp
 
 OBJS = $(SRCS:.c=.o)
 
