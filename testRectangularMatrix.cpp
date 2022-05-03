@@ -1,5 +1,5 @@
 #include <iostream>
-#include "ArrayRectangularMatrix.hpp"
+#include "ArraySquareMatrix.hpp"
 
 using namespace std;
 
@@ -17,10 +17,10 @@ int main() {
         }
     }
 
-    ArrayRectangularMatrix<int>* example = new ArrayRectangularMatrix<int>(2, 3, arr);
+    ArraySquareMatrix<int>* example = new ArraySquareMatrix<int>(2, arr);
 
-    for (int i = 0; i < example->GetNumberRows(); i++) {
-        for (int j = 0; j < example->GetNumberColumns(); j++) {
+    for (int i = 0; i < example->GetDimension(); i++) {
+        for (int j = 0; j < example->GetDimension(); j++) {
             cout << example->Get(i, j) << " ";
         }
         cout << endl;
@@ -28,11 +28,10 @@ int main() {
         cout << endl;
 
 
-    example->AddRow(arr[0], 2);
-    example->AddColumn(arr[1], 1);
+    example->AddRowAndColumn(arr[0], 1, arr[1], 1);
 
-    for (int i = 0; i < example->GetNumberRows(); i++) {
-        for (int j = 0; j < example->GetNumberColumns(); j++) {
+    for (int i = 0; i < example->GetDimension(); i++) {
+        for (int j = 0; j < example->GetDimension(); j++) {
             cout << example->Get(i, j) << " ";
         }
         cout << endl;
@@ -41,10 +40,10 @@ int main() {
 
 
     example->MultRow(2, 3);
-    example->MultColumn(3, 4);
+    example->MultColumn(2, 4);
 
-    for (int i = 0; i < example->GetNumberRows(); i++) {
-        for (int j = 0; j < example->GetNumberColumns(); j++) {
+    for (int i = 0; i < example->GetDimension(); i++) {
+        for (int j = 0; j < example->GetDimension(); j++) {
             cout << example->Get(i, j) << " ";
         }
         cout << endl;
@@ -55,8 +54,8 @@ int main() {
     example->AddRowByRow(0, 1, 1);
     example->AddColumnByColumn(1, 2, 1);
 
-    for (int i = 0; i < example->GetNumberRows(); i++) {
-        for (int j = 0; j < example->GetNumberColumns(); j++) {
+    for (int i = 0; i < example->GetDimension(); i++) {
+        for (int j = 0; j < example->GetDimension(); j++) {
             cout << example->Get(i, j) << " ";
         }
         cout << endl;
@@ -67,20 +66,20 @@ int main() {
 
     example->SwapRows(0, 2);
 
-    for (int i = 0; i < example->GetNumberRows(); i++) {
-        for (int j = 0; j < example->GetNumberColumns(); j++) {
+    for (int i = 0; i < example->GetDimension(); i++) {
+        for (int j = 0; j < example->GetDimension(); j++) {
             cout << example->Get(i, j) << " ";
         }
         cout << endl;
     }
         cout << endl;
 
-    ArrayRectangularMatrix<int>* example2 = new ArrayRectangularMatrix<int>;
+    ArraySquareMatrix<int>* example2 = new ArraySquareMatrix<int>;
     *example2 = *example;
     example->MultScalar(-4);
 
-    for (int i = 0; i < example->GetNumberRows(); i++) {
-        for (int j = 0; j < example->GetNumberColumns(); j++) {
+    for (int i = 0; i < example->GetDimension(); i++) {
+        for (int j = 0; j < example->GetDimension(); j++) {
             cout << example2->Get(i, j) << " ";
         }
         cout << endl;
@@ -89,8 +88,8 @@ int main() {
 
     example->AddMatrix(example2);
 
-    for (int i = 0; i < example->GetNumberRows(); i++) {
-        for (int j = 0; j < example->GetNumberColumns(); j++) {
+    for (int i = 0; i < example->GetDimension(); i++) {
+        for (int j = 0; j < example->GetDimension(); j++) {
             cout << example->Get(i, j) << " ";
         }
         cout << endl;
