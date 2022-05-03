@@ -1,5 +1,5 @@
 #include <iostream>
-#include "RectangularMatrix.hpp"
+#include "ArrayRectangularMatrix.hpp"
 
 using namespace std;
 
@@ -17,7 +17,7 @@ int main() {
         }
     }
 
-    RectangularMatrix<int>* example = new RectangularMatrix<int>(2, 3, arr);
+    ArrayRectangularMatrix<int>* example = new ArrayRectangularMatrix<int>(2, 3, arr);
 
     for (int i = 0; i < example->GetNumberRows(); i++) {
         for (int j = 0; j < example->GetNumberColumns(); j++) {
@@ -66,6 +66,28 @@ int main() {
 
 
     example->SwapRows(0, 2);
+
+    for (int i = 0; i < example->GetNumberRows(); i++) {
+        for (int j = 0; j < example->GetNumberColumns(); j++) {
+            cout << example->Get(i, j) << " ";
+        }
+        cout << endl;
+    }
+        cout << endl;
+
+    ArrayRectangularMatrix<int>* example2 = new ArrayRectangularMatrix<int>;
+    *example2 = *example;
+    example->MultScalar(-4);
+
+    for (int i = 0; i < example->GetNumberRows(); i++) {
+        for (int j = 0; j < example->GetNumberColumns(); j++) {
+            cout << example2->Get(i, j) << " ";
+        }
+        cout << endl;
+    }
+        cout << endl;
+
+    example->AddMatrix(example2);
 
     for (int i = 0; i < example->GetNumberRows(); i++) {
         for (int j = 0; j < example->GetNumberColumns(); j++) {
