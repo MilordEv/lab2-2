@@ -22,6 +22,7 @@ class ArraySequence : public Sequence<T> {
         int GetLength() override;
         Sequence<T>* GetSubsequence(int startIndex, int endIndex) override;
 
+        void Set(T item, int index) override;
         void Append(T item) override;
         void Prepend(T item) override;
         void InsertAt(T item, int index) override;
@@ -48,7 +49,7 @@ ArraySequence<T>::ArraySequence(const ArraySequence<T> &arraySequence) {
     this->count = arraySequence.count;
 
     if (this->count) {
-        this->items = new DynamicArray<T>(arraySequence.items);
+        this->items = arraySequence.items;
     } else {
         this->items = new DynamicArray<T>();
     }
@@ -112,6 +113,20 @@ Sequence <T>* ArraySequence<T>::GetSubsequence(int startIndex, int endIndex) {
 
     return newArraySequence;
 }
+
+
+template<typename T>
+void ArraySequence<T>::Set(T item, int index) {
+    if (index >= this->count || index < 0) {
+        throw std::out_of_range("Out of the range of the array");
+    }
+
+    this->items->Set(index, item);
+}
+
+
+
+
 
 template<typename T>
 void ArraySequence<T>::Append(T item) {

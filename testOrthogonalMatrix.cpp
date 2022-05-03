@@ -19,8 +19,53 @@ int main() {
 
     RectangularMatrix<int>* example = new RectangularMatrix<int>(2, 3, arr);
 
-    example->addRow(arr[0], 2);
-    example->addColumn(arr[1], 1);
+    for (int i = 0; i < example->GetNumberRows(); i++) {
+        for (int j = 0; j < example->GetNumberColumns(); j++) {
+            cout << example->Get(i, j) << " ";
+        }
+        cout << endl;
+    }
+        cout << endl;
+
+
+    example->AddRow(arr[0], 2);
+    example->AddColumn(arr[1], 1);
+
+    for (int i = 0; i < example->GetNumberRows(); i++) {
+        for (int j = 0; j < example->GetNumberColumns(); j++) {
+            cout << example->Get(i, j) << " ";
+        }
+        cout << endl;
+    }
+        cout << endl;
+
+
+    example->MultRow(2, 3);
+    example->MultColumn(3, 4);
+
+    for (int i = 0; i < example->GetNumberRows(); i++) {
+        for (int j = 0; j < example->GetNumberColumns(); j++) {
+            cout << example->Get(i, j) << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+
+
+    example->AddRowByRow(0, 1, 1);
+    example->AddColumnByColumn(1, 2, 1);
+
+    for (int i = 0; i < example->GetNumberRows(); i++) {
+        for (int j = 0; j < example->GetNumberColumns(); j++) {
+            cout << example->Get(i, j) << " ";
+        }
+        cout << endl;
+    }
+        cout << endl;
+
+
+
+    example->SwapRows(0, 2);
 
     for (int i = 0; i < example->GetNumberRows(); i++) {
         for (int j = 0; j < example->GetNumberColumns(); j++) {
@@ -30,6 +75,10 @@ int main() {
     }
 
     
-
+    for (int i =0; i < n; i++) {
+        delete[] arr[i];
+    }
+    delete[] arr;
+    delete example;
     return 0;
 }

@@ -20,8 +20,15 @@ class RectangularMatrix {
         size_t GetNumberColumns(); 
         T Get(int indexRow, int indexColumn);
 
-        void addRow(T* newRow, int indexRow);
-        void addColumn(T* newColumn, int indexColumn);
+        void AddRow(T* newRow, int indexRow);
+        void AddColumn(T* newColumn, int indexColumn);
+
+        void MultRow(int numberRow, T scalar);
+        void MultColumn(int numberColumn, T scalar);
+        void AddRowByRow(int indexRowWhereAdd, int indexRowWhicheAdd, T coefficient);
+        void AddColumnByColumn(int indexColumnWhereAdd, int indexColumnWhicheAdd, T coefficient);
+        void SwapRows(int indexFirstRow, int indexSecondRow);
+        void SwapColumns(int indexFirstColumn, int indexSecondColumn);
 
 };
 
@@ -92,7 +99,7 @@ T RectangularMatrix<T>::Get(int indexRow, int indexColumn) {
 }
 
 template<typename T>
-void RectangularMatrix<T>::addRow(T* newRow, int indexRow) {
+void RectangularMatrix<T>::AddRow(T* newRow, int indexRow) {
     if (indexRow > this->numberRows || indexRow < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -132,8 +139,8 @@ void RectangularMatrix<T>::addRow(T* newRow, int indexRow) {
 
 
 template<typename T>
-void RectangularMatrix<T>::addColumn(T* newColumn, int indexColumn) {
-    if (indexColumn > this->numberRows || indexColumn < 0) {
+void RectangularMatrix<T>::AddColumn(T* newColumn, int indexColumn) {
+    if (indexColumn > this->GetNumberColumns() || indexColumn < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
 
@@ -141,5 +148,120 @@ void RectangularMatrix<T>::addColumn(T* newColumn, int indexColumn) {
         (this->items)[i].InsertAt(newColumn[i], indexColumn);
     }
 }
+
+template<typename T>
+void RectangularMatrix<T>::MultRow(int numberRow, T scalar) {
+    if (numberRow > this->numberRows || numberRow < 0) {
+        throw std::out_of_range("Out of the range of the array");
+    }
+
+    if (!(scalar)) {
+        throw std::invalid_argument("invalid value");
+    }
+
+    for (int i = 0; i < this->GetNumberColumns(); i++) {
+        this->items[numberRow].Set(scalar * this->Get(numberRow, i), i);
+    }
+}
+
+template<typename T>
+void RectangularMatrix<T>::MultColumn(int numberColumn, T scalar) {
+    if (numberColumn > this->GetNumberColumns() || numberColumn < 0) {
+        throw std::out_of_range("Out of the range of the array");
+    }
+
+    if (!(scalar)) {
+        throw std::invalid_argument("invalid value");
+    }
+
+    for (int i = 0; i < this->numberRows; i++) {
+        this->items[i].Set(scalar * this->Get(i, numberColumn), numberColumn);
+    }
+}
+
+template<typename T>
+void RectangularMatrix<T>::AddRowByRow(int indexRowWhereAdd, int indexRowWhicheAdd, T coefficient) {
+    if (indexRowWhereAdd >= this->numberRows || indexRowWhereAdd < 0) {
+        throw std::out_of_range("Out of the range of the array");
+    }
+
+    if (indexRowWhicheAdd >= this->numberRows || indexRowWhicheAdd < 0) {
+        throw std::out_of_range("Out of the range of the array");
+    }
+
+    if (!(coefficient)) {
+        throw std::invalid_argument("invalid value");
+    }
+
+    for (int i = 0; i < this->GetNumberColumns(); i++) {
+        this->items[indexRowWhereAdd].Set(coefficient * this->Get(indexRowWhicheAdd, i) + this->Get(indexRowWhereAdd, i), i);
+    }
+}
+
+template<typename T>
+void RectangularMatrix<T>::AddColumnByColumn(int indexColumnWhereAdd, int indexColumnWhicheAdd, T coefficient) {
+    if (indexColumnWhereAdd >= this->GetNumberColumns() || indexColumnWhereAdd < 0) {
+        throw std::out_of_range("Out of the range of the array");
+    }
+
+    if (indexColumnWhicheAdd >= this->GetNumberColumns() || indexColumnWhicheAdd < 0) {
+        throw std::out_of_range("Out of the range of the array");
+    }
+
+    if (!(coefficient)) {
+        throw std::invalid_argument("invalid value");
+    }
+
+    for (int i = 0; i < this->numberRows; i++) {
+        this->items[i].Set(coefficient * this->Get(i, indexColumnWhicheAdd) + this->Get(i, indexColumnWhereAdd), indexColumnWhereAdd);
+    }
+}
+
+template<typename T>
+void RectangularMatrix<T>::SwapRows(int indexFirstRow, int indexSecondRow) {
+    if (indexFirstRow >= this->numberRows || indexFirstRow < 0) {
+        throw std::out_of_range("Out of the range of the array");
+    }
+
+    if (indexSecondRow >= this->numberRows || indexSecondRow < 0) {
+        throw std::out_of_range("Out of the range of the array");
+    }
+
+    ArraySequence<T> buf;
+    for (int i = 0; i < this->GetNumberColumns(); i++) {
+        buf.Append(this->Get(indexFirstRow, i));
+    }
+    for (int i = 0; i < this->GetNumberColumns(); i++) {
+       this->items[indexFirstRow].Set(this->Get(indexSecondRow, i), i);
+    }
+    for (int i = 0; i < this->GetNumberColumns(); i++) {
+       this->items[indexSecondRow].Set(buf.Get(i), i);
+    }
+}
+
+template<typename T>
+void RectangularMatrix<T>::SwapColumns(int indexFirstColumn, int indexSecondColumn) {
+    if (indexFirstColumn >= this->numberRows || indexFirstColumn < 0) {
+        throw std::out_of_range("Out of the range of the array");
+    }
+
+    if (indexSecondColumn >= this->numberRows || indexSecondColumn < 0) {
+        throw std::out_of_range("Out of the range of the array");
+    }
+
+    ArraySequence<T> buf;
+    for (int i = 0; i < this->numberRows; i++) {
+        buf.Append(this->Get(i, indexFirstColumn));
+    }
+    for (int i = 0; i < this->numberRows; i++) {
+       this->items[i].Set(this->Get(i, indexSecondColumn), indexFirstColumn);
+    }
+    for (int i = 0; i < this->numberRows; i++) {
+       this->items[i].Set(buf.Get(i), indexSecondColumn);
+    }
+}
+
+
+
 
 #endif

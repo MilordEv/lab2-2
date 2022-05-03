@@ -21,6 +21,7 @@ class ListSequence : public Sequence<T> {
         int GetLength() override;
         Sequence<T>* GetSubsequence(int startIndex, int endIndex) override;
 
+        void Set(T item, int index) override;
         void Append(T item) override;
         void Prepend(T item) override;
         void InsertAt(T item, int index) override;
@@ -89,6 +90,17 @@ Sequence<T>* ListSequence<T>::GetSubsequence(int startIndex, int endIndex) {
     return subList;
 }
 
+
+
+template<typename T>
+void ListSequence<T>::Set(T item, int index) {
+    if (index >= this->GetLength() || index < 0) {
+        throw std::out_of_range("Out of the range of the array");
+    }
+
+    this->Remove(index);
+    this->InsertAt(item, index);
+}
 
 
 
