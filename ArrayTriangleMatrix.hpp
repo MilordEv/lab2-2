@@ -18,7 +18,8 @@ class ArrayTriangleMatrix {
         size_t GetDimension() const; 
         T Get(int indexRow, int indexColumn) const;
 
-        void AddRowAndColumn(T* newRow, int indexRow, T* newColumn, int indexColumn);
+        void AddRow(T* newRow);
+        void AddColumn(T* newColumn);
 
         void MultScalar(T scalar);
         void AddMatrix(ArrayTriangleMatrix<T>* rectangularMatrix);
@@ -101,48 +102,39 @@ T ArrayTriangleMatrix<T>::Get(int indexRow, int indexColumn) const {
 }
 
 template<typename T>
-void ArrayTriangleMatrix<T>::AddRowAndColumn(T* newRow, int indexRow, T* newColumn, int indexColumn) {
-    if (indexRow > this->GetDimension() || indexRow < 0) {
-        throw std::out_of_range("Out of the range of the matrix");
+void ArrayTriangleMatrix<T>::AddRow(T* newRow) {
+    ArraySequence<T>* newItems = new ArraySequence<T>[this->GetDimension() + 1];
+
+    for (int i = 0; i <= this->GetDimension(); i++) {
+        newItems[0].Append(newRow[i]);
     }
 
-    if (indexColumn > this->GetDimension() || indexColumn < 0) {
-        throw std::out_of_range("Out of the range of the matrix");
-    }
-
-    ArraySequence<T>* oldItems = new ArraySequence<T>[this->GetDimension()];
-
-    for (int i = 0; i < this->GetDimension(); i++) {
-        for (int j = i; j < this->GetDimension(); j++) {
-            oldItems[i].Append(this->Get(i, j));
+    for (int i = 1; i <= this->GetDimension(); i++) {
+        for (int j = 0; j <= this->GetDimension() - i; j++) {
+            newItems.Append(this->Get(i - 1, j));
         }
     }
 
-    int numberColumn = this->GetDimension();
     delete[] this->items;
-    this->items = new ArraySequence<T>[numberColumn + 1];
-    
-    for (int i = 0; i < indexRow; i++) {
-        for (int j = i; j < numberColumn; j++) {
-            (this->items)[i].Append(oldItems[i].Get(j - i));
+    this->items = newItems;
+}
+
+template<typename T>
+void ArrayTriangleMatrix<T>::AddColumn(T* newColumn) {
+    ArraySequence<T>* newItems = new ArraySequence<T>[this->GetDimension() + 1];
+
+    for (int i = 0; i <= this->GetDimension(); i++) {
+        for (int j = 0; j < this->GetDimension() - i; j++) {
+            newItems[i]->Append(this->Get(i, j));
         }
     }
 
-    for (int i = 0; i < numberColumn; i++) {
-            (this->items)[indexRow].Append(newRow[i]);
+    for (int i = 0; i <= this->GetDimension(); i++) {
+        newItems[i].Append(newColumn[i]);
     }
 
-    for (int i = indexRow + 1; i < this->GetDimension() + 1; i++) {
-        for (int j = 0; j < numberColumn; j++) {
-            (this->items)[i].Append(oldItems[i-1].Get(j));
-        }
-    }
-
-    delete[] oldItems;
-
-    for (int i = 0; i < this->GetDimension(); i++) {
-        (this->items)[i].InsertAt(newColumn[i], indexColumn);
-    }
+    delete[] this->items;
+    this->items = newItems;
 }
 
 template<typename T>
@@ -152,8 +144,8 @@ void ArrayTriangleMatrix<T>::MultScalar(T scalar) {
     }
 
     for (int i = 0; i < this->GetDimension(); i++) {
-        for (int j = 0; j < this->GetDimension(); j++) {
-            this->items[i].Set(this->Get(i, j) * scalar, j);
+        for (int j = i; j < this->GetDimension(); j++) {
+            this->items[i].Set(this->Get(i, j) * scalar, j - i);
         }
     }
 }
@@ -165,8 +157,8 @@ void ArrayTriangleMatrix<T>::AddMatrix(ArrayTriangleMatrix<T>* rectangularMatrix
     }
 
     for (int i = 0; i < this->GetDimension(); i++) {
-        for (int j = 0; j < this->GetDimension(); j++) {
-            this->items[i].Set(this->Get(i, j) + rectangularMatrix->Get(i, j), j);
+        for (int j = i; j < this->GetDimension(); j++) {
+            this->items[i].Set(this->Get(i, j) + rectangularMatrix->Get(i, j), j - i);
         }
     }
 } 
