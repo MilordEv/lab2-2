@@ -13,7 +13,7 @@ class ArrayTriangleMatrix {
     public:
         ArrayTriangleMatrix(int dimension, T** items);
         ArrayTriangleMatrix();
-        ArrayTriangleMatrix(const ArrayTriangleMatrix<T> &squarearMatrix);
+        ArrayTriangleMatrix(const ArrayTriangleMatrix<T> &triangleMatrix);
         ~ArrayTriangleMatrix();
 
         size_t GetDimension() const; 
@@ -23,7 +23,7 @@ class ArrayTriangleMatrix {
         void AddColumn(T* newColumn);
 
         void MultScalar(T scalar);
-        void AddMatrix(ArrayTriangleMatrix<T>* rectangularMatrix);
+        void AddMatrix(ArrayTriangleMatrix<T>* triangleMatrix);
 
         T GetNorm();
 
@@ -47,12 +47,12 @@ ArrayTriangleMatrix<T>::ArrayTriangleMatrix() {
 }
 
 template<typename T>
-ArrayTriangleMatrix<T>::ArrayTriangleMatrix(const ArrayTriangleMatrix<T> &squarearMatrix) {
+ArrayTriangleMatrix<T>::ArrayTriangleMatrix(const ArrayTriangleMatrix<T> &triangleMatrix) {
     this->items = new ArraySequence<T>[squarearMatrix.GetDimension()];
 
-    for (int i = 0; i < squarearMatrix.GetDimension(); i++) {
-        for (int j = i; j < squarearMatrix.GetDimension(); j++) {
-            (this->items)[i].Append(squarearMatrix.Get(i, j));
+    for (int i = 0; i < triangleMatrix.GetDimension(); i++) {
+        for (int j = i; j < triangleMatrix.GetDimension(); j++) {
+            (this->items)[i].Append(triangleMatrix.Get(i, j));
         }
     }
 }
@@ -155,14 +155,14 @@ void ArrayTriangleMatrix<T>::MultScalar(T scalar) {
 }
 
 template<typename T>
-void ArrayTriangleMatrix<T>::AddMatrix(ArrayTriangleMatrix<T>* rectangularMatrix) {
-    if (this->GetDimension() != rectangularMatrix->GetDimension()) {
+void ArrayTriangleMatrix<T>::AddMatrix(ArrayTriangleMatrix<T>* triangleMatrix) {
+    if (this->GetDimension() != triangleMatrix->GetDimension()) {
         throw std::invalid_argument("the number of rows in the matrix does not match");
     }
 
     for (int i = 0; i < this->GetDimension(); i++) {
         for (int j = i; j < this->GetDimension(); j++) {
-            this->items[i].Set(this->Get(i, j) + rectangularMatrix->Get(i, j), j - i);
+            this->items[i].Set(this->Get(i, j) + triangleMatrix->Get(i, j), j - i);
         }
     }
 } 

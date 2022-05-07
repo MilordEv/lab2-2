@@ -29,7 +29,7 @@ class ListSquareMatrix {
         void SwapColumns(int indexFirstColumn, int indexSecondColumn);
 
         void MultScalar(T scalar);
-        void AddMatrix(ListSquareMatrix<T>* rectangularMatrix);
+        void AddMatrix(ListSquareMatrix<T>* squarearMatrix);
 
         T GetNorm();
 
@@ -278,14 +278,14 @@ void ListSquareMatrix<T>::MultScalar(T scalar) {
 }
 
 template<typename T>
-void ListSquareMatrix<T>::AddMatrix(ListSquareMatrix<T>* rectangularMatrix) {
-    if (this->GetDimension() != rectangularMatrix->GetDimension()) {
+void ListSquareMatrix<T>::AddMatrix(ListSquareMatrix<T>* squarearMatrix) {
+    if (this->GetDimension() != squarearMatrix->GetDimension()) {
         throw std::invalid_argument("the number of rows in the matrix does not match");
     }
 
     for (int i = 0; i < this->GetDimension(); i++) {
         for (int j = 0; j < this->GetDimension(); j++) {
-            this->items[i].Set(this->Get(i, j) + rectangularMatrix->Get(i, j), j);
+            this->items[i].Set(this->Get(i, j) + squarearMatrix->Get(i, j), j);
         }
     }
 } 

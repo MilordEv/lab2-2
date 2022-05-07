@@ -1,5 +1,5 @@
 #include <iostream>
-#include "ArrayRectangularMatrix.hpp"
+#include "ArrayDiagonalMatrix.hpp"
 
 using namespace std;
 
@@ -17,35 +17,38 @@ int main() {
         }
     }
 
-    ArrayRectangularMatrix<int>* example = new ArrayRectangularMatrix<int>(2, 2, arr);
+    ArrayDiagonalMatrix<int>* example = new ArrayDiagonalMatrix<int>(3, arr[0]);
 
-    for (int i = 0; i < example->GetNumberRows(); i++) {
-        for (int j = 0; j < example->GetNumberColumns(); j++) {
-            //if (i > j) {
-            //    cout << 0 << " ";
-            //} else {
+    for (int i = 0; i < example->GetDimension(); i++) {
+        for (int j = 0; j < example->GetDimension(); j++) {
+            if (i != j) {
+                cout << 0 << " ";
+            } else {
                 cout << example->Get(i, j) << " ";
-            //}
+            }
         }
         cout << endl;
     }
         cout << endl;
 
         cout << example->GetNorm() << endl;
-/*
 
-    example->AddRowAndColumn(arr[0], 1, arr[1], 1);
+
+    example->InsertRowOrColumn(1, 100);
 
     for (int i = 0; i < example->GetDimension(); i++) {
         for (int j = 0; j < example->GetDimension(); j++) {
-            cout << example->Get(i, j) << " ";
+            if (i != j) {
+                cout << 0 << " ";
+            } else {
+                cout << example->Get(i, j) << " ";
+            }
         }
         cout << endl;
-    }
-        cout << endl;
+    }        cout << endl;
 
 
-    example->MultRow(2, 3);
+    /*example->MultRow(2, 3);
     example->MultColumn(2, 4);
 
     for (int i = 0; i < example->GetDimension(); i++) {
@@ -79,14 +82,18 @@ int main() {
         cout << endl;
     }
         cout << endl; 
-
-    ArrayRectangularMatrix<int>* example2 = new ArrayRectangularMatrix<int>;
+*/
+    ArrayDiagonalMatrix<int>* example2 = new ArrayDiagonalMatrix<int>;
     *example2 = *example;
     example->MultScalar(-4);
 
     for (int i = 0; i < example->GetDimension(); i++) {
         for (int j = 0; j < example->GetDimension(); j++) {
-            cout << example2->Get(i, j) << " ";
+            if (i != j) {
+                cout << 0 << " ";
+            } else {
+                cout << example->Get(i, j) << " ";
+            }
         }
         cout << endl;
     }
@@ -96,7 +103,7 @@ int main() {
 
     for (int i = 0; i < example->GetDimension(); i++) {
         for (int j = 0; j < example->GetDimension(); j++) {
-            if (i > j) {
+            if (i != j) {
                 cout << 0 << " ";
             } else {
                 cout << example->Get(i, j) << " ";
@@ -106,25 +113,12 @@ int main() {
     }
         cout << endl;
 
-    example->AddColumn(arr[0]);
-
-    for (int i = 0; i < example->GetDimension(); i++) {
-        for (int j = 0; j < example->GetDimension(); j++) {
-            if (i > j) {
-                cout << 0 << " ";
-            } else {
-                cout << example->Get(i, j) << " ";
-            }
-        }
-        cout << endl;
-    }
-        cout << endl;
-    */
+    
     for (int i =0; i < n; i++) {
         delete[] arr[i];
     }
     delete[] arr;
     delete example;
-    //delete example2;
+    delete example2;
     return 0;
 }
