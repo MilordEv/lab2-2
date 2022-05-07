@@ -3,6 +3,7 @@
 
 #include "ArraySequence.hpp"
 #include <stdexcept>
+#include <math.h>
 
 template<typename T>
 class ArrayRectangularMatrix {
@@ -32,6 +33,8 @@ class ArrayRectangularMatrix {
 
         void MultScalar(T scalar);
         void AddMatrix(ArrayRectangularMatrix<T>* rectangularMatrix);
+
+        T GetNorm();
 
         const ArrayRectangularMatrix<T> & operator = (const ArrayRectangularMatrix<T> & rectangularMatrix);
 
@@ -310,5 +313,26 @@ void ArrayRectangularMatrix<T>::AddMatrix(ArrayRectangularMatrix<T>* rectangular
         }
     }
 } 
+
+template<typename T>
+T ArrayRectangularMatrix<T>::GetNorm() {
+    if (!(this->GetNumberRows())) {
+        throw std::domain_error("empty matrix");
+    }
+
+    T valueNorm = this->Get(0, 0);
+    valueNorm *= valueNorm;
+
+    for (int i = 0; i < this->GetNumberRows(); i++) {
+        for (int j = 0; j < this->GetNumberColumns(); j++) {
+            if (!(i == 0 && j == 0)) {
+                valueNorm += this->Get(i, j) * this->Get(i, j);
+            }
+        }
+    }
+
+    return pow(valueNorm, 0.5);
+}
+
 
 #endif

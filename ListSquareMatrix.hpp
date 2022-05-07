@@ -3,6 +3,7 @@
 
 #include "ListSequence.hpp"
 #include <stdexcept>
+#include <math.h>
 
 template<typename T>
 class ListSquareMatrix {
@@ -29,6 +30,8 @@ class ListSquareMatrix {
 
         void MultScalar(T scalar);
         void AddMatrix(ListSquareMatrix<T>* rectangularMatrix);
+
+        T GetNorm();
 
         const ListSquareMatrix<T> & operator = (const ListSquareMatrix<T> & squarearMatrix);
 
@@ -286,5 +289,25 @@ void ListSquareMatrix<T>::AddMatrix(ListSquareMatrix<T>* rectangularMatrix) {
         }
     }
 } 
+
+template<typename T>
+T ListSquareMatrix<T>::GetNorm() {
+    if (!(this->GetDimension())) {
+        throw std::domain_error("empty matrix");
+    }
+
+    T valueNorm = this->Get(0, 0);
+    valueNorm *= valueNorm;
+
+    for (int i = 0; i < this->GetDimension(); i++) {
+        for (int j = 0; j < this->GetDimension(); j++) {
+            if (!(i == 0 && j == 0)) {
+                valueNorm += this->Get(i, j) * this->Get(i, j);
+            }
+        }
+    }
+
+    return pow(valueNorm, 0.5);
+}
 
 #endif

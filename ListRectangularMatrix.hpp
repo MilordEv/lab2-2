@@ -3,6 +3,7 @@
 
 #include "ListSequence.hpp"
 #include <stdexcept>
+#include <math.h>
 
 template<typename T>
 class ListRectangularMatrix {
@@ -32,6 +33,8 @@ class ListRectangularMatrix {
 
         void MultScalar(T scalar);
         void AddMatrix(ListRectangularMatrix<T>* rectangularMatrix);
+
+        T GetNorm();
 
         const ListRectangularMatrix<T> & operator = (const ListRectangularMatrix<T> & rectangularMatrix);
 
@@ -310,5 +313,25 @@ void ListRectangularMatrix<T>::AddMatrix(ListRectangularMatrix<T>* rectangularMa
         }
     }
 } 
+
+template<typename T>
+T ListRectangularMatrix<T>::GetNorm() {
+    if (!(this->GetNumberRows())) {
+        throw std::domain_error("empty matrix");
+    }
+
+    T valueNorm = this->Get(0, 0);
+    valueNorm *= valueNorm;
+
+    for (int i = 0; i < this->GetNumberRows(); i++) {
+        for (int j = 0; j < this->GetNumberColumns(); j++) {
+            if (!(i == 0 && j == 0)) {
+                valueNorm += this->Get(i, j) * this->Get(i, j);
+            }
+        }
+    }
+
+    return pow(valueNorm, 0.5);
+}
 
 #endif
