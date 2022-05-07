@@ -1,19 +1,19 @@
-#ifndef __ARRAYTRIANGLEMATRIX__
-#define __ARRAYTRIANGLEMATRIX__
+#ifndef __LISTTRIANGLEMATRIX__
+#define __LISTTRIANGLEMATRIX__
 
-#include "ArraySequence.hpp"
+#include "ListSequence.hpp"
 #include <stdexcept>
 
 template<typename T>
-class ArrayTriangleMatrix {
+class ListTriangleMatrix {
     private:
-        ArraySequence<T>* items;
+        ListSequence<T>* items;
 
     public:
-        ArrayTriangleMatrix(int dimension, T** items);
-        ArrayTriangleMatrix();
-        ArrayTriangleMatrix(const ArrayTriangleMatrix<T> &squarearMatrix);
-        ~ArrayTriangleMatrix();
+        ListTriangleMatrix(int dimension, T** items);
+        ListTriangleMatrix();
+        ListTriangleMatrix(const ListTriangleMatrix<T> &squarearMatrix);
+        ~ListTriangleMatrix();
 
         size_t GetDimension() const; 
         T Get(int indexRow, int indexColumn) const;
@@ -22,15 +22,15 @@ class ArrayTriangleMatrix {
         void AddColumn(T* newColumn);
 
         void MultScalar(T scalar);
-        void AddMatrix(ArrayTriangleMatrix<T>* rectangularMatrix);
+        void AddMatrix(ListTriangleMatrix<T>* rectangularMatrix);
 
-        const ArrayTriangleMatrix<T> & operator = (const ArrayTriangleMatrix<T> & squarearMatrix);
+        const ListTriangleMatrix<T> & operator = (const ListTriangleMatrix<T> & squarearMatrix);
 
 };
 
 template<typename T>
-ArrayTriangleMatrix<T>::ArrayTriangleMatrix(int dimension, T** items) {
-    this->items = new ArraySequence<T>[dimension];
+ListTriangleMatrix<T>::ListTriangleMatrix(int dimension, T** items) {
+    this->items = new ListSequence<T>[dimension];
     for (int i = 0; i < dimension; i++) {
         for (int j = i; j < dimension; j++) {
             (this->items)[i].Append(items[i][j]);
@@ -39,13 +39,13 @@ ArrayTriangleMatrix<T>::ArrayTriangleMatrix(int dimension, T** items) {
 }
 
 template<typename T>
-ArrayTriangleMatrix<T>::ArrayTriangleMatrix() {
+ListTriangleMatrix<T>::ListTriangleMatrix() {
     this->items = nullptr;
 }
 
 template<typename T>
-ArrayTriangleMatrix<T>::ArrayTriangleMatrix(const ArrayTriangleMatrix<T> &squarearMatrix) {
-    this->items = new ArraySequence<T>[squarearMatrix.GetDimension()];
+ListTriangleMatrix<T>::ListTriangleMatrix(const ListTriangleMatrix<T> &squarearMatrix) {
+    this->items = new ListSequence<T>[squarearMatrix.GetDimension()];
 
     for (int i = 0; i < squarearMatrix.GetDimension(); i++) {
         for (int j = i; j < squarearMatrix.GetDimension(); j++) {
@@ -56,8 +56,8 @@ ArrayTriangleMatrix<T>::ArrayTriangleMatrix(const ArrayTriangleMatrix<T> &square
 
 
 template<typename T>
-const ArrayTriangleMatrix<T> & ArrayTriangleMatrix<T>::operator = (const ArrayTriangleMatrix<T> & squarearMatrix) {
-    this->items = new ArraySequence<T>[squarearMatrix.GetDimension()];
+const ListTriangleMatrix<T> & ListTriangleMatrix<T>::operator = (const ListTriangleMatrix<T> & squarearMatrix) {
+    this->items = new ListSequence<T>[squarearMatrix.GetDimension()];
 
     for (int i = 0; i < squarearMatrix.GetDimension(); i++) {
         for (int j = i; j < squarearMatrix.GetDimension(); j++) {
@@ -72,7 +72,7 @@ const ArrayTriangleMatrix<T> & ArrayTriangleMatrix<T>::operator = (const ArrayTr
 
 
 template<typename T>
-ArrayTriangleMatrix<T>::~ArrayTriangleMatrix() {
+ListTriangleMatrix<T>::~ListTriangleMatrix() {
     delete[] this->items;
 }
 
@@ -80,12 +80,12 @@ ArrayTriangleMatrix<T>::~ArrayTriangleMatrix() {
 
 
 template<typename T>
-size_t ArrayTriangleMatrix<T>::GetDimension() const {
+size_t ListTriangleMatrix<T>::GetDimension() const {
     return (this->items)[0].GetLength();
 }
 
 template<typename T>
-T ArrayTriangleMatrix<T>::Get(int indexRow, int indexColumn) const {
+T ListTriangleMatrix<T>::Get(int indexRow, int indexColumn) const {
 
     if (indexRow >= this->GetDimension() || indexRow < 0) {
         throw std::out_of_range("Out of the range of the matrix");
@@ -103,8 +103,8 @@ T ArrayTriangleMatrix<T>::Get(int indexRow, int indexColumn) const {
 }
 
 template<typename T>
-void ArrayTriangleMatrix<T>::AddRow(T* newRow) {
-    ArraySequence<T>* newItems = new ArraySequence<T>[this->GetDimension() + 1];
+void ListTriangleMatrix<T>::AddRow(T* newRow) {
+    ListSequence<T>* newItems = new ListSequence<T>[this->GetDimension() + 1];
 
     for (int i = 0; i <= this->GetDimension(); i++) {
         newItems[0].Append(newRow[i]);
@@ -121,8 +121,8 @@ void ArrayTriangleMatrix<T>::AddRow(T* newRow) {
 }
 
 template<typename T>
-void ArrayTriangleMatrix<T>::AddColumn(T* newColumn) {
-    ArraySequence<T>* newItems = new ArraySequence<T>[this->GetDimension() + 1];
+void ListTriangleMatrix<T>::AddColumn(T* newColumn) {
+    ListSequence<T>* newItems = new ListSequence<T>[this->GetDimension() + 1];
 
     for (int i = 0; i <= this->GetDimension(); i++) {
         for (int j = i; j < this->GetDimension(); j++) {
@@ -139,7 +139,7 @@ void ArrayTriangleMatrix<T>::AddColumn(T* newColumn) {
 }
 
 template<typename T>
-void ArrayTriangleMatrix<T>::MultScalar(T scalar) {
+void ListTriangleMatrix<T>::MultScalar(T scalar) {
     if (!(scalar)) {
         throw std::invalid_argument("invalid value");
     }
@@ -152,7 +152,7 @@ void ArrayTriangleMatrix<T>::MultScalar(T scalar) {
 }
 
 template<typename T>
-void ArrayTriangleMatrix<T>::AddMatrix(ArrayTriangleMatrix<T>* rectangularMatrix) {
+void ListTriangleMatrix<T>::AddMatrix(ListTriangleMatrix<T>* rectangularMatrix) {
     if (this->GetDimension() != rectangularMatrix->GetDimension()) {
         throw std::invalid_argument("the number of rows in the matrix does not match");
     }
