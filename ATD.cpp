@@ -1,22 +1,9 @@
 #include <iostream>
-#include "ArraySequence.hpp"
-#include "ListSequence.hpp"
+#include "ATD.h"
 
 using namespace std;
 
-int InputData(int* codeData, ArraySequence<int>** arraySequenceInt, ArraySequence<double>** arraySequenceDouble, ListSequence<int>** listSequenceInt, ListSequence<double>** listSequenceDouble);
-int AddEnd(int* codeData, ArraySequence<int>** arraySequenceInt, ArraySequence<double>** arraySequenceDouble, ListSequence<int>** listSequenceInt, ListSequence<double>** listSequenceDouble);
-int AddBeginning(int* codeData, ArraySequence<int>** arraySequenceInt, ArraySequence<double>** arraySequenceDouble, ListSequence<int>** listSequenceInt, ListSequence<double>** listSequenceDouble);
-int AddElement(int* codeData, ArraySequence<int>** arraySequenceInt, ArraySequence<double>** arraySequenceDouble, ListSequence<int>** listSequenceInt, ListSequence<double>** listSequenceDouble);
-int GetSub(int* codeData, ArraySequence<int>** arraySequenceInt, ArraySequence<double>** arraySequenceDouble, ListSequence<int>** listSequenceInt, ListSequence<double>** listSequenceDouble);
-int ConcateSequence(int* codeData, ArraySequence<int>** arraySequenceInt, ArraySequence<double>** arraySequenceDouble, ListSequence<int>** listSequenceInt, ListSequence<double>** listSequenceDouble);
-int DeleteItem(int* codeData, ArraySequence<int>** arraySequenceInt, ArraySequence<double>** arraySequenceDouble, ListSequence<int>** listSequenceInt, ListSequence<double>** listSequenceDouble);
-int OutputSequence(int* codeData, ArraySequence<int>** arraySequenceInt, ArraySequence<double>** arraySequenceDouble, ListSequence<int>** listSequenceInt, ListSequence<double>** listSequenceDouble);
-int OutputLength(int* codeData, ArraySequence<int>** arraySequenceInt, ArraySequence<double>** arraySequenceDouble, ListSequence<int>** listSequenceInt, ListSequence<double>** listSequenceDouble);
-
-
-
-int main() {
+int AtdMenu() {
 
     ArraySequence<int>* arraySequenceInt = nullptr;
     ArraySequence<double>* arraySequenceDouble = nullptr;
@@ -37,7 +24,7 @@ int main() {
         cout << "\t7 - Delete an item" << endl;
         cout << "\t8 - Output the sequence" << endl; 
         cout << "\t9 - Output the length of the sequence" << endl; 
-        cout << "\t0 - Exit the program" << endl << endl;
+        cout << "\t0 - Exit the test" << endl << endl;
         cout << "Enter: ";
 
         int code = 0;
@@ -86,7 +73,7 @@ int main() {
                 delete listSequenceInt;
                 delete listSequenceDouble;
 
-                cout << endl << "Exiting the program" << endl;
+                cout << endl << "Exiting the test" << endl;
                 return 0;
 
             default: 
