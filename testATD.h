@@ -1,5 +1,5 @@
-#ifndef __ATD__
-#define __ATD__
+#ifndef __TESTATD__
+#define __TESTATD__
 
 #include "ArraySequence.hpp"
 #include "ListSequence.hpp"

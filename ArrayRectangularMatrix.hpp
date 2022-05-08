@@ -264,11 +264,11 @@ void ArrayRectangularMatrix<T>::SwapRows(int indexFirstRow, int indexSecondRow) 
 
 template<typename T>
 void ArrayRectangularMatrix<T>::SwapColumns(int indexFirstColumn, int indexSecondColumn) {
-    if (indexFirstColumn >= this->numberRows || indexFirstColumn < 0) {
+    if (indexFirstColumn >= this->GetNumberColumns() || indexFirstColumn < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
 
-    if (indexSecondColumn >= this->numberRows || indexSecondColumn < 0) {
+    if (indexSecondColumn >= this->GetNumberColumns() || indexSecondColumn < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
 
