@@ -110,6 +110,10 @@ size_t ListRectangularMatrix<T>::GetNumberColumns() const {
 
 template<typename T>
 T ListRectangularMatrix<T>::Get(int indexRow, int indexColumn) const {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix")
+    }
+
     if (indexRow >= this->numberRows || indexRow < 0) {
         throw std::out_of_range("Out of the range of the array");
     }

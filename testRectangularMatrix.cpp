@@ -26,7 +26,7 @@ int RectangularMatrix() {
         cout << "\t12 - To output norm matrix" << endl; 
         cout << "\t13 - To output dimension" << endl; 
         cout << "\t14 - To output matrix" << endl; 
-        cout << "\t14 - To exit the test" << endl; 
+        cout << "\t0 - To exit the test" << endl; 
         cout << endl << "Enter: ";
         
         int code = 0;
@@ -120,10 +120,6 @@ int InputData(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMatri
 
     switch(code) {
         case 1:
-            cout << "do you want to enter an empty matrix or with data? (not 0 for non-empty matrix, 0 for empty matrix)" << endl << endl;
-            cout << "Your answer: ";
-
-            cin >> answer;
             if (answer) {
                 cout << "Enter the number of rows" << endl;
                 cout << "Enter: ";

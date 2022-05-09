@@ -95,6 +95,10 @@ size_t ListSquareMatrix<T>::GetDimension() const {
 
 template<typename T>
 T ListSquareMatrix<T>::Get(int indexRow, int indexColumn) const {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix")
+    }
+
     if (indexRow >= this->GetDimension() || indexRow < 0) {
         throw std::out_of_range("Out of the range of the array");
     }

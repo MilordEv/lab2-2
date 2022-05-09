@@ -77,11 +77,19 @@ ArrayDiagonalMatrix<T>::~ArrayDiagonalMatrix() {
 
 template<typename T>
 size_t ArrayDiagonalMatrix<T>::GetDimension() const {
+    if (!(this->items)) {
+        return 0;
+    }
+
     return this->items->GetLength();
 }
 
 template<typename T>
 T ArrayDiagonalMatrix<T>::Get(int indexRow, int indexColumn) const {
+
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
 
     if (indexRow >= this->GetDimension() || indexRow < 0) {
         throw std::out_of_range("Out of the range of the matrix");
@@ -100,15 +108,26 @@ T ArrayDiagonalMatrix<T>::Get(int indexRow, int indexColumn) const {
 
 template<typename T>
 void ArrayDiagonalMatrix<T>::InsertRowOrColumn(int index, T newValue) {
-    if (index >= this->GetDimension() || index < 0) {
-        throw std::out_of_range("Out of the range of the matrix");
-    }
+    if (this->items) {
 
-    this->items->InsertAt(newValue, index);
+        if (index >= this->GetDimension() || index < 0) {
+            throw std::out_of_range("Out of the range of the matrix");
+        }
+
+        this->items->InsertAt(newValue, index);
+
+    } else {
+        this->items = new ArraySequence<T>;
+        this->items->Append(newValue);
+    }
 }
 
 template<typename T>
 void ArrayDiagonalMatrix<T>::MultScalar(T scalar) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (!(scalar)) {
         throw std::invalid_argument("invalid value");
     }
@@ -120,6 +139,10 @@ void ArrayDiagonalMatrix<T>::MultScalar(T scalar) {
 
 template<typename T>
 void ArrayDiagonalMatrix<T>::AddMatrix(ArrayDiagonalMatrix<T>* diagonalMatrix) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (this->GetDimension() != diagonalMatrix->GetDimension()) {
         throw std::invalid_argument("the number of rows in the matrix does not match");
     }
@@ -131,8 +154,8 @@ void ArrayDiagonalMatrix<T>::AddMatrix(ArrayDiagonalMatrix<T>* diagonalMatrix) {
 
 template<typename T>
 T ArrayDiagonalMatrix<T>::GetNorm() {
-    if (!(this->GetDimension())) {
-        throw std::domain_error("empty matrix");
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
     }
 
     T valueNorm = this->Get(0, 0);
