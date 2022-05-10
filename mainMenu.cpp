@@ -12,6 +12,7 @@ int main() {
     int codeType = 0;
 
     while(1 + 1 == 2) {
+        
         cout << "Enter a number for:" << endl;
         cout << "\t1 - To test ATD" << endl; 
         cout << "\t2 - To test rectangulat matrix" << endl; 
