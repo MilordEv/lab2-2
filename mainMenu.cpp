@@ -1,6 +1,9 @@
 #include <iostream>
 #include "testATD.h"
 #include "testRectangularMatrix.h"
+#include "testSquareMatrix.h"
+#include "testTriangleMatrix.h"
+#include "testDiagonalMatrix.h"
 
 using namespace std;
 
@@ -12,14 +15,9 @@ int main() {
         cout << "Enter a number for:" << endl;
         cout << "\t1 - To test ATD" << endl; 
         cout << "\t2 - To test rectangulat matrix" << endl; 
-        /*cout << "\t3 - Add an element to the beginning" << endl; 
-        cout << "\t4 - Insert an element into the sequence" << endl; 
-        cout << "\t5 - Get a subsequence" << endl; 
-        cout << "\t6 - Сoncatenate sequences" << endl;
-        cout << "\t7 - Delete an item" << endl;
-        cout << "\t8 - Output the sequence" << endl; 
-        cout << "\t9 - Output the length of the sequence" << endl; 
-        cout << "\t0 - Exit the test" << endl << endl;*/
+        cout << "\t3 - To test square matrix" << endl; 
+        cout << "\t4 - To test triangle matrix" << endl; 
+        cout << "\t5 - To test diagonal matrix" << endl; 
         cout << "\t0 - To exit the program" << endl; 
         cout << endl << "Enter: ";
 
@@ -33,6 +31,18 @@ int main() {
 
             case 2:
                 RectangularMatrix();
+                break;
+
+            case 3:
+                SquareMatrix();
+                break;
+
+            case 4:
+                TriangleMatrix();
+                break;
+
+            case 5:
+                DiagonalMatrix();
                 break;
                 
             case 0:

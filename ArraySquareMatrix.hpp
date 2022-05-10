@@ -159,7 +159,7 @@ void ArraySquareMatrix<T>::AddRowAndColumn(T* newRow, int indexRow, T* newColumn
             (this->items)[i].InsertAt(newColumn[i], indexColumn);
         }
     } else {
-        this->items new ArraySequence<T>[1];
+        this->items =  new ArraySequence<T>[1];
 
         this->items[0].Append(newRow[0]);
     }

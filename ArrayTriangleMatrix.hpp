@@ -48,7 +48,7 @@ ArrayTriangleMatrix<T>::ArrayTriangleMatrix() {
 
 template<typename T>
 ArrayTriangleMatrix<T>::ArrayTriangleMatrix(const ArrayTriangleMatrix<T> &triangleMatrix) {
-    this->items = new ArraySequence<T>[squarearMatrix.GetDimension()];
+    this->items = new ArraySequence<T>[triangleMatrix.GetDimension()];
 
     for (int i = 0; i < triangleMatrix.GetDimension(); i++) {
         for (int j = i; j < triangleMatrix.GetDimension(); j++) {
@@ -95,7 +95,7 @@ template<typename T>
 T ArrayTriangleMatrix<T>::Get(int indexRow, int indexColumn) const {
 
     if (!(this->items)) {
-        throw std::domain_error("Empty matrix")
+        throw std::domain_error("Empty matrix");
     }
 
     if (indexRow >= this->GetDimension() || indexRow < 0) {
@@ -149,7 +149,7 @@ void ArrayTriangleMatrix<T>::AddRow(T* newRow) {
 
 template<typename T>
 void ArrayTriangleMatrix<T>::AddColumn(T* newColumn) {
-    if (!(this->items)) {
+    if (this->items) {
         ArraySequence<T>* newItems = new ArraySequence<T>[this->GetDimension() + 1];
 
         for (int i = 0; i <= this->GetDimension(); i++) {

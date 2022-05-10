@@ -219,6 +219,7 @@ int AddNewRow(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMatri
         if (*codeType == 1) {
             int newRow[(*arrayRectangularMatrixInt)->GetNumberColumns()];
 
+            cout << "Enter new row:" << endl;
             for (int i = 0; i < (*arrayRectangularMatrixInt)->GetNumberColumns(); i++) {
                 cout << "[" << i << "]: ";
                 cin >> newRow[i];
@@ -261,6 +262,7 @@ int AddNewColumn(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMa
         if (*codeType == 1) {
             int newColumn[(*arrayRectangularMatrixInt)->GetNumberRows()];
 
+            cout << "Enter new column:" << endl;
             for (int i = 0; i < (*arrayRectangularMatrixInt)->GetNumberRows(); i++) {
                 cout << "[" << i << "]: ";
                 cin >> newColumn[i];

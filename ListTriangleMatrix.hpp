@@ -48,7 +48,7 @@ ListTriangleMatrix<T>::ListTriangleMatrix() {
 
 template<typename T>
 ListTriangleMatrix<T>::ListTriangleMatrix(const ListTriangleMatrix<T> &triangleMatrix) {
-    this->items = new ListSequence<T>[squarearMatrix.GetDimension()];
+    this->items = new ListSequence<T>[triangleMatrix.GetDimension()];
 
     for (int i = 0; i < triangleMatrix.GetDimension(); i++) {
         for (int j = i; j < triangleMatrix.GetDimension(); j++) {
@@ -95,7 +95,7 @@ template<typename T>
 T ListTriangleMatrix<T>::Get(int indexRow, int indexColumn) const {
 
     if (!(this->items)) {
-        throw std::domain_error("Empty matrix")
+        throw std::domain_error("Empty matrix");
     }
 
     if (indexRow >= this->GetDimension() || indexRow < 0) {
@@ -149,7 +149,7 @@ void ListTriangleMatrix<T>::AddRow(T* newRow) {
 
 template<typename T>
 void ListTriangleMatrix<T>::AddColumn(T* newColumn) {
-    if (!(this->items)) {
+    if (this->items) {
         ListSequence<T>* newItems = new ListSequence<T>[this->GetDimension() + 1];
 
         for (int i = 0; i <= this->GetDimension(); i++) {
