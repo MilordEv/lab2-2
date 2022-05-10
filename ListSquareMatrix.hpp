@@ -90,13 +90,17 @@ ListSquareMatrix<T>::~ListSquareMatrix() {
 
 template<typename T>
 size_t ListSquareMatrix<T>::GetDimension() const {
+    if (!(this->items)) {
+        return 0;
+    }
+
     return (this->items)[0].GetLength();
 }
 
 template<typename T>
 T ListSquareMatrix<T>::Get(int indexRow, int indexColumn) const {
     if (!(this->items)) {
-        throw std::domain_error("Empty matrix")
+        throw std::domain_error("Empty matrix");
     }
 
     if (indexRow >= this->GetDimension() || indexRow < 0) {
@@ -112,52 +116,61 @@ T ListSquareMatrix<T>::Get(int indexRow, int indexColumn) const {
 
 template<typename T>
 void ListSquareMatrix<T>::AddRowAndColumn(T* newRow, int indexRow, T* newColumn, int indexColumn) {
-    if (indexRow > this->GetDimension() || indexRow < 0) {
-        throw std::out_of_range("Out of the range of the array");
-    }
-
-    if (indexColumn > this->GetDimension() || indexColumn < 0) {
-        throw std::out_of_range("Out of the range of the array");
-    }
-
-    ListSequence<T>* oldItems = new ListSequence<T>[this->GetDimension()];
-
-    for (int i = 0; i < this->GetDimension(); i++) {
-        for (int j = 0; j < this->GetDimension(); j++) {
-            oldItems[i].Append(this->Get(i, j));
+    if (this->items) {
+        if (indexRow > this->GetDimension() || indexRow < 0) {
+            throw std::out_of_range("Out of the range of the array");
         }
-    }
 
-    int numberColumn = this->GetDimension();
-    delete[] this->items;
-    this->items = new ListSequence<T>[numberColumn + 1];
-    
-    for (int i = 0; i < indexRow; i++) {
-        for (int j = 0; j < numberColumn; j++) {
-            (this->items)[i].Append(oldItems[i].Get(j));
+        if (indexColumn > this->GetDimension() || indexColumn < 0) {
+            throw std::out_of_range("Out of the range of the array");
         }
-    }
 
-    for (int i = 0; i < numberColumn; i++) {
-            (this->items)[indexRow].Append(newRow[i]);
-    }
+        ListSequence<T>* oldItems = new ListSequence<T>[this->GetDimension()];
 
-    for (int i = indexRow + 1; i < this->GetDimension() + 1; i++) {
-        for (int j = 0; j < numberColumn; j++) {
-            (this->items)[i].Append(oldItems[i-1].Get(j));
+        for (int i = 0; i < this->GetDimension(); i++) {
+            for (int j = 0; j < this->GetDimension(); j++) {
+                oldItems[i].Append(this->Get(i, j));
+            }
         }
-    }
 
-    delete[] oldItems;
+        int numberColumn = this->GetDimension();
+        delete[] this->items;
+        this->items = new ListSequence<T>[numberColumn + 1];
+        
+        for (int i = 0; i < indexRow; i++) {
+            for (int j = 0; j < numberColumn; j++) {
+                (this->items)[i].Append(oldItems[i].Get(j));
+            }
+        }
 
-    for (int i = 0; i < this->GetDimension(); i++) {
-        (this->items)[i].InsertAt(newColumn[i], indexColumn);
+        for (int i = 0; i < numberColumn; i++) {
+                (this->items)[indexRow].Append(newRow[i]);
+        }
+
+        for (int i = indexRow + 1; i < this->GetDimension() + 1; i++) {
+            for (int j = 0; j < numberColumn; j++) {
+                (this->items)[i].Append(oldItems[i-1].Get(j));
+            }
+        }
+
+        delete[] oldItems;
+
+        for (int i = 0; i < this->GetDimension(); i++) {
+            (this->items)[i].InsertAt(newColumn[i], indexColumn);
+        }
+    } else {
+        this->items new ListSequence<T>[1];
+
+        this->items[0].Append(newRow[0]);
     }
 }
 
-
 template<typename T>
 void ListSquareMatrix<T>::MultRow(int numberRow, T scalar) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (numberRow > this->GetDimension() || numberRow < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -173,6 +186,10 @@ void ListSquareMatrix<T>::MultRow(int numberRow, T scalar) {
 
 template<typename T>
 void ListSquareMatrix<T>::MultColumn(int numberColumn, T scalar) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (numberColumn > this->GetDimension() || numberColumn < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -188,6 +205,10 @@ void ListSquareMatrix<T>::MultColumn(int numberColumn, T scalar) {
 
 template<typename T>
 void ListSquareMatrix<T>::AddRowByRow(int indexRowWhereAdd, int indexRowWhicheAdd, T coefficient) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (indexRowWhereAdd >= this->GetDimension() || indexRowWhereAdd < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -207,6 +228,10 @@ void ListSquareMatrix<T>::AddRowByRow(int indexRowWhereAdd, int indexRowWhicheAd
 
 template<typename T>
 void ListSquareMatrix<T>::AddColumnByColumn(int indexColumnWhereAdd, int indexColumnWhicheAdd, T coefficient) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (indexColumnWhereAdd >= this->GetDimension() || indexColumnWhereAdd < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -226,6 +251,10 @@ void ListSquareMatrix<T>::AddColumnByColumn(int indexColumnWhereAdd, int indexCo
 
 template<typename T>
 void ListSquareMatrix<T>::SwapRows(int indexFirstRow, int indexSecondRow) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (indexFirstRow >= this->GetDimension() || indexFirstRow < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -248,6 +277,10 @@ void ListSquareMatrix<T>::SwapRows(int indexFirstRow, int indexSecondRow) {
 
 template<typename T>
 void ListSquareMatrix<T>::SwapColumns(int indexFirstColumn, int indexSecondColumn) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (indexFirstColumn >= this->GetDimension() || indexFirstColumn < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -270,6 +303,10 @@ void ListSquareMatrix<T>::SwapColumns(int indexFirstColumn, int indexSecondColum
 
 template<typename T>
 void ListSquareMatrix<T>::MultScalar(T scalar) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (!(scalar)) {
         throw std::invalid_argument("invalid value");
     }
@@ -283,6 +320,10 @@ void ListSquareMatrix<T>::MultScalar(T scalar) {
 
 template<typename T>
 void ListSquareMatrix<T>::AddMatrix(ListSquareMatrix<T>* squarearMatrix) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (this->GetDimension() != squarearMatrix->GetDimension()) {
         throw std::invalid_argument("the number of rows in the matrix does not match");
     }
@@ -296,8 +337,8 @@ void ListSquareMatrix<T>::AddMatrix(ListSquareMatrix<T>* squarearMatrix) {
 
 template<typename T>
 T ListSquareMatrix<T>::GetNorm() {
-    if (!(this->GetDimension())) {
-        throw std::domain_error("empty matrix");
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
     }
 
     T valueNorm = this->Get(0, 0);

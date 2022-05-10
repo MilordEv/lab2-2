@@ -26,7 +26,7 @@ class ListDiagonalMatrix {
 
         T GetNorm();
 
-        const ListDiagonalMatrix<T> & operator = (const ListDiagonalMatrix<T> & squarearMatrix);
+        const ListDiagonalMatrix<T> & operator = (const ListDiagonalMatrix<T> & diagonalMatrix);
 
 };
 
@@ -77,6 +77,10 @@ ListDiagonalMatrix<T>::~ListDiagonalMatrix() {
 
 template<typename T>
 size_t ListDiagonalMatrix<T>::GetDimension() const {
+    if (!(this->items)) {
+        return 0;
+    }
+
     return this->items->GetLength();
 }
 
@@ -84,7 +88,7 @@ template<typename T>
 T ListDiagonalMatrix<T>::Get(int indexRow, int indexColumn) const {
 
     if (!(this->items)) {
-        throw std::domain_error("Empty matrix")
+        throw std::domain_error("Empty matrix");
     }
 
     if (indexRow >= this->GetDimension() || indexRow < 0) {
@@ -104,15 +108,26 @@ T ListDiagonalMatrix<T>::Get(int indexRow, int indexColumn) const {
 
 template<typename T>
 void ListDiagonalMatrix<T>::InsertRowOrColumn(int index, T newValue) {
-    if (index >= this->GetDimension() || index < 0) {
-        throw std::out_of_range("Out of the range of the matrix");
-    }
+    if (this->items) {
 
-    this->items->InsertAt(newValue, index);
+        if (index >= this->GetDimension() || index < 0) {
+            throw std::out_of_range("Out of the range of the matrix");
+        }
+
+        this->items->InsertAt(newValue, index);
+
+    } else {
+        this->items = new ListSequence<T>;
+        this->items->Append(newValue);
+    }
 }
 
 template<typename T>
 void ListDiagonalMatrix<T>::MultScalar(T scalar) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (!(scalar)) {
         throw std::invalid_argument("invalid value");
     }
@@ -124,6 +139,10 @@ void ListDiagonalMatrix<T>::MultScalar(T scalar) {
 
 template<typename T>
 void ListDiagonalMatrix<T>::AddMatrix(ListDiagonalMatrix<T>* diagonalMatrix) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (this->GetDimension() != diagonalMatrix->GetDimension()) {
         throw std::invalid_argument("the number of rows in the matrix does not match");
     }
@@ -135,8 +154,8 @@ void ListDiagonalMatrix<T>::AddMatrix(ListDiagonalMatrix<T>* diagonalMatrix) {
 
 template<typename T>
 T ListDiagonalMatrix<T>::GetNorm() {
-    if (!(this->GetDimension())) {
-        throw std::domain_error("empty matrix");
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
     }
 
     T valueNorm = this->Get(0, 0);

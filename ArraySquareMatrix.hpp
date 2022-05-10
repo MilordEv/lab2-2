@@ -251,6 +251,10 @@ void ArraySquareMatrix<T>::AddColumnByColumn(int indexColumnWhereAdd, int indexC
 
 template<typename T>
 void ArraySquareMatrix<T>::SwapRows(int indexFirstRow, int indexSecondRow) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (indexFirstRow >= this->GetDimension() || indexFirstRow < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -273,6 +277,10 @@ void ArraySquareMatrix<T>::SwapRows(int indexFirstRow, int indexSecondRow) {
 
 template<typename T>
 void ArraySquareMatrix<T>::SwapColumns(int indexFirstColumn, int indexSecondColumn) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (indexFirstColumn >= this->GetDimension() || indexFirstColumn < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -295,6 +303,10 @@ void ArraySquareMatrix<T>::SwapColumns(int indexFirstColumn, int indexSecondColu
 
 template<typename T>
 void ArraySquareMatrix<T>::MultScalar(T scalar) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (!(scalar)) {
         throw std::invalid_argument("invalid value");
     }
@@ -308,6 +320,10 @@ void ArraySquareMatrix<T>::MultScalar(T scalar) {
 
 template<typename T>
 void ArraySquareMatrix<T>::AddMatrix(ArraySquareMatrix<T>* squarearMatrix) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (this->GetDimension() != squarearMatrix->GetDimension()) {
         throw std::invalid_argument("the number of rows in the matrix does not match");
     }
@@ -322,7 +338,7 @@ void ArraySquareMatrix<T>::AddMatrix(ArraySquareMatrix<T>* squarearMatrix) {
 template<typename T>
 T ArraySquareMatrix<T>::GetNorm() {
     if (!(this->items)) {
-        throw std::domain_error("Empty matrix")
+        throw std::domain_error("Empty matrix");
     }
 
     T valueNorm = this->Get(0, 0);

@@ -116,102 +116,87 @@ int InputData(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMatri
     int code = 0;
     cin >> code;
 
-    int answer = 0;
+    int numberRow = 0;
+    int numberColumns = 0;
 
     switch(code) {
-        case 1:
-            if (answer) {
-                cout << "Enter the number of rows" << endl;
-                cout << "Enter: ";
-                int numberRow;
-                cin >> numberRow;
+        case 1: {
+            cout << "Enter the number of rows" << endl;
+            cout << "Enter: ";
+            cin >> numberRow;
 
-                cout << "Enter the number of columns" << endl;
-                cout << "Enter: ";
-                int numberColumns;
-                cin >> numberColumns;
+            cout << "Enter the number of columns" << endl;
+            cout << "Enter: ";
+            cin >> numberColumns;
 
-                int** items = new int*[numberRow];
+            int** items = new int*[numberRow];
 
-                for (int i = 0; i < numberRow; i++) {
-                    items[i] = new int[numberColumns];
-                }
-
-                cout << "Enter items:" << endl;
-                for (int i = 0; i < numberRow; i++) {
-                    for (int j = 0; j < numberColumns; j++) {
-                        cout << '[' << i << "][" << j << "]: "; 
-                        cin >> items[i][j];
-                    }
-                }
-
-                delete *arrayRectangularMatrixInt;
-                *arrayRectangularMatrixInt = new ArrayRectangularMatrix<int>(numberRow, numberColumns, items);
-
-                for (int i = 0; i < numberRow; i++) {
-                    delete[] items[i];
-                }
-
-                delete[] items;
-
-            } else {
-                delete *arrayRectangularMatrixInt;
-                *arrayRectangularMatrixInt = new ArrayRectangularMatrix<int>();
+            for (int i = 0; i < numberRow; i++) {
+                items[i] = new int[numberColumns];
             }
+
+            cout << "Enter items:" << endl;
+            for (int i = 0; i < numberRow; i++) {
+                for (int j = 0; j < numberColumns; j++) {
+                    cout << '[' << i << "][" << j << "]: "; 
+                    cin >> items[i][j];
+                }
+            }
+
+            delete *arrayRectangularMatrixInt;
+            *arrayRectangularMatrixInt = new ArrayRectangularMatrix<int>(numberRow, numberColumns, items);
+
+            for (int i = 0; i < numberRow; i++) {
+                delete[] items[i];
+            }
+
+            delete[] items;
 
             *codeType = 1;
             cout << endl << endl;
             return 0;
             break;
 
-        case 2:
-            cout << "do you want to enter an empty matrix or with data? (not 0 for non-empty matrix, 0 for empty matrix)" << endl << endl;
-            cout << "Your answer: ";
+        }
 
-            cin >> answer;
-            if (answer) {
-                cout << "Enter the number of rows" << endl;
-                cout << "Enter: ";
-                int numberRow;
-                cin >> numberRow;
+        case 2: {
+            cout << "Enter the number of rows" << endl;
+            cout << "Enter: ";
+            cin >> numberRow;
 
-                cout << "Enter the number of columns" << endl;
-                cout << "Enter: ";
-                int numberColumns;
-                cin >> numberColumns;
+            cout << "Enter the number of columns" << endl;
+            cout << "Enter: ";
+            cin >> numberColumns;
 
-                int** items = new int*[numberRow];
+            int** items = new int*[numberRow];
 
-                for (int i = 0; i < numberRow; i++) {
-                    items[i] = new int[numberColumns];
-                }
-
-                cout << "Enter items:" << endl;
-                for (int i = 0; i < numberRow; i++) {
-                    for (int j = 0; j < numberColumns; j++) {
-                        cout << '[' << i << "][" << j << "]: "; 
-                        cin >> items[i][j];
-                    }
-                }
-
-                delete *listRectangularMatrixInt;
-                *listRectangularMatrixInt = new ListRectangularMatrix<int>(numberRow, numberColumns, items);
-
-                for (int i = 0; i < numberRow; i++) {
-                    delete[] items[i];
-                }
-
-                delete[] items;
-
-            } else {
-                delete *listRectangularMatrixInt;
-                *listRectangularMatrixInt = new ListRectangularMatrix<int>();
+            for (int i = 0; i < numberRow; i++) {
+                items[i] = new int[numberColumns];
             }
+
+            cout << "Enter items:" << endl;
+            for (int i = 0; i < numberRow; i++) {
+                for (int j = 0; j < numberColumns; j++) {
+                    cout << '[' << i << "][" << j << "]: "; 
+                    cin >> items[i][j];
+                }
+            }
+
+            delete *listRectangularMatrixInt;
+            *listRectangularMatrixInt = new ListRectangularMatrix<int>(numberRow, numberColumns, items);
+
+            for (int i = 0; i < numberRow; i++) {
+                delete[] items[i];
+            }
+
+            delete[] items;
 
             *codeType = 2;
             cout << endl << endl;
             return 0;
             break;
+
+        }
 
         default:
             cout << "You make mistake" << endl << endl << endl;
@@ -229,29 +214,36 @@ int AddNewRow(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMatri
     int index = 0;
     cin >> index;
 
-    if (*codeType == 1) {
-        int newRow[(*arrayRectangularMatrixInt)->GetNumberColumns()];
+    try {
 
-        for (int i = 0; i < (*arrayRectangularMatrixInt)->GetNumberColumns(); i++) {
-            cout << "[" << i << "]: ";
-            cin >> newRow[i];
+        if (*codeType == 1) {
+            int newRow[(*arrayRectangularMatrixInt)->GetNumberColumns()];
+
+            for (int i = 0; i < (*arrayRectangularMatrixInt)->GetNumberColumns(); i++) {
+                cout << "[" << i << "]: ";
+                cin >> newRow[i];
+            }
+
+            (*arrayRectangularMatrixInt)->AddRow(newRow, index);        
         }
 
-        (*arrayRectangularMatrixInt)->AddRow(newRow, index);        
-    }
+        if (*codeType == 2) {
+            int newRow[(*listRectangularMatrixInt)->GetNumberColumns()];
 
-    if (*codeType == 2) {
-        int newRow[(*listRectangularMatrixInt)->GetNumberColumns()];
+            for (int i = 0; i < (*listRectangularMatrixInt)->GetNumberColumns(); i++) {
+                cout << "[" << i << "]: ";
+                cin >> newRow[i];
+            }
 
-        for (int i = 0; i < (*listRectangularMatrixInt)->GetNumberColumns(); i++) {
-            cout << "[" << i << "]: ";
-            cin >> newRow[i];
+            (*listRectangularMatrixInt)->AddRow(newRow, index);  
         }
 
-        (*listRectangularMatrixInt)->AddRow(newRow, index);  
+        return 0;
+    } 
+    catch (out_of_range err) {
+        cout << endl << "An error has occurred: " << err.what() << endl;
+        return -1;
     }
-
-    return 0;
 }
 
 int AddNewColumn(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMatrixInt, ListRectangularMatrix<int>** listRectangularMatrixInt) {
@@ -264,29 +256,36 @@ int AddNewColumn(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMa
     int index = 0;
     cin >> index;
 
-    if (*codeType == 1) {
-        int newColumn[(*arrayRectangularMatrixInt)->GetNumberRows()];
+    try {
 
-        for (int i = 0; i < (*arrayRectangularMatrixInt)->GetNumberRows(); i++) {
-            cout << "[" << i << "]: ";
-            cin >> newColumn[i];
+        if (*codeType == 1) {
+            int newColumn[(*arrayRectangularMatrixInt)->GetNumberRows()];
+
+            for (int i = 0; i < (*arrayRectangularMatrixInt)->GetNumberRows(); i++) {
+                cout << "[" << i << "]: ";
+                cin >> newColumn[i];
+            }
+
+            (*arrayRectangularMatrixInt)->AddColumn(newColumn, index);        
         }
 
-        (*arrayRectangularMatrixInt)->AddColumn(newColumn, index);        
-    }
+        if (*codeType == 2) {
+            int newColumn[(*listRectangularMatrixInt)->GetNumberRows()];
 
-    if (*codeType == 2) {
-        int newColumn[(*listRectangularMatrixInt)->GetNumberRows()];
+            for (int i = 0; i < (*listRectangularMatrixInt)->GetNumberRows(); i++) {
+                cout << "[" << i << "]: ";
+                cin >> newColumn[i];
+            }
 
-        for (int i = 0; i < (*listRectangularMatrixInt)->GetNumberRows(); i++) {
-            cout << "[" << i << "]: ";
-            cin >> newColumn[i];
+            (*listRectangularMatrixInt)->AddColumn(newColumn, index);  
         }
 
-        (*listRectangularMatrixInt)->AddColumn(newColumn, index);  
+        return 0;
+    } 
+    catch (out_of_range err) {
+        cout << endl << "An error has occurred: " << err.what() << endl;
+        return -1;
     }
-
-    return 0;
 }
 
 int MultRowByDigit(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMatrixInt, ListRectangularMatrix<int>** listRectangularMatrixInt) {
@@ -299,20 +298,27 @@ int MultRowByDigit(int* codeType, ArrayRectangularMatrix<int>** arrayRectangular
     int index = 0;
     cin >> index;
 
-    if (*codeType == 1) {
-        cout << "Enter the number by which you want to multiply the row: ";
-        int digit = 0;
-        cin >> digit;
+    try {
 
-        (*arrayRectangularMatrixInt)->MultRow(index, digit); 
-    }
+        if (*codeType == 1) {
+            cout << "Enter the number by which you want to multiply the row: ";
+            int digit = 0;
+            cin >> digit;
 
-    if (*codeType == 2) {
-        cout << "Enter the number by which you want to multiply the row: ";
-        int digit = 0;
-        cin >> digit;
+            (*arrayRectangularMatrixInt)->MultRow(index, digit); 
+        }
 
-        (*listRectangularMatrixInt)->MultRow(index, digit); 
+        if (*codeType == 2) {
+            cout << "Enter the number by which you want to multiply the row: ";
+            int digit = 0;
+            cin >> digit;
+
+            (*listRectangularMatrixInt)->MultRow(index, digit); 
+        }
+    } 
+    catch (out_of_range err) {
+        cout << endl << "An error has occurred: " << err.what() << endl;
+        return -1;
     }
 
     return 0;
@@ -328,23 +334,30 @@ int MultColumnByDigit(int* codeType, ArrayRectangularMatrix<int>** arrayRectangu
     int index = 0;
     cin >> index;
 
-    if (*codeType == 1) {
-        cout << "Enter the number by which you want to multiply the column: ";
-        int digit = 0;
-        cin >> digit;
+    try {
 
-        (*arrayRectangularMatrixInt)->MultColumn(index, digit); 
+        if (*codeType == 1) {
+            cout << "Enter the number by which you want to multiply the column: ";
+            int digit = 0;
+            cin >> digit;
+
+            (*arrayRectangularMatrixInt)->MultColumn(index, digit); 
+        }
+
+        if (*codeType == 2) {
+            cout << "Enter the number by which you want to multiply the column: ";
+            int digit = 0;
+            cin >> digit;
+
+            (*listRectangularMatrixInt)->MultColumn(index, digit); 
+        }
+
+        return 0;
+    } 
+    catch (out_of_range err) {
+        cout << endl << "An error has occurred: " << err.what() << endl;
+        return -1;
     }
-
-    if (*codeType == 2) {
-        cout << "Enter the number by which you want to multiply the column: ";
-        int digit = 0;
-        cin >> digit;
-
-        (*listRectangularMatrixInt)->MultColumn(index, digit); 
-    }
-
-    return 0;
 }
 
 int AddingRows(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMatrixInt, ListRectangularMatrix<int>** listRectangularMatrixInt) {
@@ -361,20 +374,27 @@ int AddingRows(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMatr
     int indexToRow = 0;
     cin >> indexToRow;
 
-    if (*codeType == 1) {
-        cout << "Enter the coefficient by which you want to multiply the second row: ";
-        int digit = 0;
-        cin >> digit;
+    try {
 
-        (*arrayRectangularMatrixInt)->AddRowByRow(indexFromRow, indexToRow, digit); 
-    }
+        if (*codeType == 1) {
+            cout << "Enter the coefficient by which you want to multiply the second row: ";
+            int digit = 0;
+            cin >> digit;
 
-    if (*codeType == 2) {
-        cout << "Enter the coefficient by which you want to multiply the second row: ";
-        int digit = 0;
-        cin >> digit;
+            (*arrayRectangularMatrixInt)->AddRowByRow(indexFromRow, indexToRow, digit); 
+        }
 
-        (*listRectangularMatrixInt)->AddRowByRow(indexFromRow, indexToRow, digit); 
+        if (*codeType == 2) {
+            cout << "Enter the coefficient by which you want to multiply the second row: ";
+            int digit = 0;
+            cin >> digit;
+
+            (*listRectangularMatrixInt)->AddRowByRow(indexFromRow, indexToRow, digit); 
+        }
+    } 
+    catch (out_of_range err) {
+        cout << endl << "An error has occurred: " << err.what() << endl;
+        return -1;
     }
 
     return 0;
@@ -394,23 +414,30 @@ int AddingColumns(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularM
     int indexToColumn = 0;
     cin >> indexToColumn;
 
-    if (*codeType == 1) {
-        cout << "Enter the coefficient by which you want to multiply the second column: ";
-        int digit = 0;
-        cin >> digit;
+    try {
 
-        (*arrayRectangularMatrixInt)->AddColumnByColumn(indexFromColumn, indexToColumn, digit); 
+        if (*codeType == 1) {
+            cout << "Enter the coefficient by which you want to multiply the second column: ";
+            int digit = 0;
+            cin >> digit;
+
+            (*arrayRectangularMatrixInt)->AddColumnByColumn(indexFromColumn, indexToColumn, digit); 
+        }
+
+        if (*codeType == 2) {
+            cout << "Enter the number by which you want to multiply the column: ";
+            int digit = 0;
+            cin >> digit;
+
+            (*listRectangularMatrixInt)->AddColumnByColumn(indexFromColumn, indexToColumn, digit); 
+        }
+
+        return 0;
+    } 
+    catch (out_of_range err) {
+        cout << endl << "An error has occurred: " << err.what() << endl;
+        return -1;
     }
-
-    if (*codeType == 2) {
-        cout << "Enter the number by which you want to multiply the column: ";
-        int digit = 0;
-        cin >> digit;
-
-        (*listRectangularMatrixInt)->AddColumnByColumn(indexFromColumn, indexToColumn, digit); 
-    }
-
-    return 0;
 }
 
 int RowPermutation(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMatrixInt, ListRectangularMatrix<int>** listRectangularMatrixInt) {
@@ -427,15 +454,22 @@ int RowPermutation(int* codeType, ArrayRectangularMatrix<int>** arrayRectangular
     int indexSecondRow = 0;
     cin >> indexSecondRow;
 
-    if (*codeType == 1) {
-        (*arrayRectangularMatrixInt)->SwapRows(indexFirstRow, indexSecondRow); 
-    }
+    try {
 
-    if (*codeType == 2) {
-        (*listRectangularMatrixInt)->SwapRows(indexFirstRow, indexSecondRow); 
-    }
+        if (*codeType == 1) {
+            (*arrayRectangularMatrixInt)->SwapRows(indexFirstRow, indexSecondRow); 
+        }
 
-    return 0;
+        if (*codeType == 2) {
+            (*listRectangularMatrixInt)->SwapRows(indexFirstRow, indexSecondRow); 
+        }
+
+        return 0;
+    } 
+    catch (out_of_range err) {
+        cout << endl << "An error has occurred: " << err.what() << endl;
+        return -1;
+    }
 }
 
 int ColumnPermutation(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMatrixInt, ListRectangularMatrix<int>** listRectangularMatrixInt) {
@@ -452,15 +486,22 @@ int ColumnPermutation(int* codeType, ArrayRectangularMatrix<int>** arrayRectangu
     int indexSecondColumn = 0;
     cin >> indexSecondColumn;
 
-    if (*codeType == 1) {
-        (*arrayRectangularMatrixInt)->SwapColumns(indexFirstColumn, indexSecondColumn); 
-    }
+    try {
 
-    if (*codeType == 2) {
-        (*listRectangularMatrixInt)->SwapColumns(indexFirstColumn, indexSecondColumn); 
-    }
+        if (*codeType == 1) {
+            (*arrayRectangularMatrixInt)->SwapColumns(indexFirstColumn, indexSecondColumn); 
+        }
 
-    return 0;
+        if (*codeType == 2) {
+            (*listRectangularMatrixInt)->SwapColumns(indexFirstColumn, indexSecondColumn); 
+        }
+
+        return 0;
+    } 
+    catch (out_of_range err) {
+        cout << endl << "An error has occurred: " << err.what() << endl;
+        return -1;
+    }
 }
 
 int MultByScalar(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMatrixInt, ListRectangularMatrix<int>** listRectangularMatrixInt) {
@@ -469,23 +510,30 @@ int MultByScalar(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMa
         return -1;
     }
 
-    if (*codeType == 1) {
-        cout << "Enter the scalar: ";
-        int scalar = 0;
-        cin >> scalar;
+    try {
 
-        (*arrayRectangularMatrixInt)->MultScalar(scalar); 
+        if (*codeType == 1) {
+            cout << "Enter the scalar: ";
+            int scalar = 0;
+            cin >> scalar;
+
+            (*arrayRectangularMatrixInt)->MultScalar(scalar); 
+        }
+
+        if (*codeType == 2) {
+            cout << "Enter the scalar: ";
+            int scalar = 0;
+            cin >> scalar;
+
+            (*listRectangularMatrixInt)->MultScalar(scalar); 
+        }
+
+        return 0;
+    } 
+    catch (out_of_range err) {
+        cout << endl << "An error has occurred: " << err.what() << endl;
+        return -1;
     }
-
-    if (*codeType == 2) {
-        cout << "Enter the scalar: ";
-        int scalar = 0;
-        cin >> scalar;
-
-        (*listRectangularMatrixInt)->MultScalar(scalar); 
-    }
-
-    return 0;
 }
 
 int AddingMatrix(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMatrixInt, ListRectangularMatrix<int>** listRectangularMatrixInt) {
@@ -494,58 +542,66 @@ int AddingMatrix(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMa
         return -1;
     }
 
-    cout << "Firstly enter the second matrix" << endl;
-    cout << "Enter the number of rows" << endl;
-    cout << "Enter: ";
-    int numberRow;
-    cin >> numberRow;
+    try {
 
-    cout << "Enter the number of columns" << endl;
-    cout << "Enter: ";
-    int numberColumns;
-    cin >> numberColumns;
+        if (*codeType == 1) {
+            int** items = new int*[(*arrayRectangularMatrixInt)->GetNumberRows()];
 
-    if (*codeType == 1) {
-        int** items = new int*[numberRow];
-
-        for (int i = 0; i < numberRow; i++) {
-            items[i] = new int[numberColumns];
-        }
-
-        cout << "Enter items:" << endl;
-        for (int i = 0; i < numberRow; i++) {
-            for (int j = 0; j < numberColumns; j++) {
-                cout << '[' << i << "][" << j << "]: "; 
-                cin >> items[i][j];
+            for (int i = 0; i < (*arrayRectangularMatrixInt)->GetNumberRows(); i++) {
+                items[i] = new int[(*arrayRectangularMatrixInt)->GetNumberColumns()];
             }
-        }
 
-        ArrayRectangularMatrix<int>* secondMatrix = new ArrayRectangularMatrix<int>(numberRow, numberColumns, items);
-
-        (*arrayRectangularMatrixInt)->AddMatrix(secondMatrix); 
-    }
-
-    if (*codeType == 2) {
-        int** items = new int*[numberRow];
-
-        for (int i = 0; i < numberRow; i++) {
-            items[i] = new int[numberColumns];
-        }
-
-        cout << "Enter items:" << endl;
-        for (int i = 0; i < numberRow; i++) {
-            for (int j = 0; j < numberColumns; j++) {
-                cout << '[' << i << "][" << j << "]: "; 
-                cin >> items[i][j];
+            cout << "Enter items:" << endl;
+            for (int i = 0; i < (*arrayRectangularMatrixInt)->GetNumberRows(); i++) {
+                for (int j = 0; j < (*arrayRectangularMatrixInt)->GetNumberColumns(); j++) {
+                    cout << '[' << i << "][" << j << "]: "; 
+                    cin >> items[i][j];
+                }
             }
+
+            ArrayRectangularMatrix<int>* secondMatrix = new ArrayRectangularMatrix<int>((*arrayRectangularMatrixInt)->GetNumberRows(), (*arrayRectangularMatrixInt)->GetNumberColumns(), items);
+
+            (*arrayRectangularMatrixInt)->AddMatrix(secondMatrix); 
+
+            for (int i = 0; i < (*arrayRectangularMatrixInt)->GetNumberRows(); i++) {
+                delete[] items[i];
+            }
+            delete[] items;
+            delete secondMatrix;
         }
 
-        ListRectangularMatrix<int>* secondMatrix = new ListRectangularMatrix<int>(numberRow, numberColumns, items);
+        if (*codeType == 2) {
+            int** items = new int*[(*listRectangularMatrixInt)->GetNumberRows()];
 
-        (*listRectangularMatrixInt)->AddMatrix(secondMatrix); 
+            for (int i = 0; i < (*listRectangularMatrixInt)->GetNumberRows(); i++) {
+                items[i] = new int[(*listRectangularMatrixInt)->GetNumberColumns()];
+            }
+
+            cout << "Enter items:" << endl;
+            for (int i = 0; i < (*listRectangularMatrixInt)->GetNumberRows(); i++) {
+                for (int j = 0; j < (*listRectangularMatrixInt)->GetNumberColumns(); j++) {
+                    cout << '[' << i << "][" << j << "]: "; 
+                    cin >> items[i][j];
+                }
+            }
+
+            ListRectangularMatrix<int>* secondMatrix = new ListRectangularMatrix<int>((*listRectangularMatrixInt)->GetNumberRows(), (*listRectangularMatrixInt)->GetNumberColumns(), items);
+
+            (*listRectangularMatrixInt)->AddMatrix(secondMatrix); 
+
+            for (int i = 0; i < (*listRectangularMatrixInt)->GetNumberRows(); i++) {
+                delete[] items[i];
+            }
+            delete[] items;
+            delete secondMatrix;
+        }
+
+        return 0;
+    } 
+    catch (out_of_range err) {
+        cout << endl << "An error has occurred: " << err.what() << endl;
+        return -1;
     }
-
-    return 0;
 }
 
 int OutputNorm(int* codeType, ArrayRectangularMatrix<int>** arrayRectangularMatrixInt, ListRectangularMatrix<int>** listRectangularMatrixInt) {

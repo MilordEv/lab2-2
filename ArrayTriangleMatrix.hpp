@@ -84,6 +84,10 @@ ArrayTriangleMatrix<T>::~ArrayTriangleMatrix() {
 
 template<typename T>
 size_t ArrayTriangleMatrix<T>::GetDimension() const {
+    if (!(this->items)) {
+        return 0;
+    }
+
     return (this->items)[0].GetLength();
 }
 
@@ -111,42 +115,67 @@ T ArrayTriangleMatrix<T>::Get(int indexRow, int indexColumn) const {
 
 template<typename T>
 void ArrayTriangleMatrix<T>::AddRow(T* newRow) {
-    ArraySequence<T>* newItems = new ArraySequence<T>[this->GetDimension() + 1];
+    if (this->items) {
+        ArraySequence<T>* newItems = new ArraySequence<T>[this->GetDimension() + 1];
 
-    for (int i = 0; i <= this->GetDimension(); i++) {
-        newItems[0].Append(newRow[i]);
-    }
+        for (int i = 0; i <= this->GetDimension(); i++) {
+            newItems[0].Append(newRow[i]);
+        }
 
-    for (int i = 1; i <= this->GetDimension(); i++) {
-        for (int j = i; j <= this->GetDimension(); j++) {
-            newItems[i].Append(this->Get(i - 1, j - 1));
+        for (int i = 1; i <= this->GetDimension(); i++) {
+            for (int j = i; j <= this->GetDimension(); j++) {
+                newItems[i].Append(this->Get(i - 1, j - 1));
+            }
+        }
+
+        delete[] this->items;
+        this->items = newItems;
+    } else {
+        int lengthRow = 0;
+        std::cout << "Enter the length of the row: ";
+        std::cin >> lengthRow;
+
+        if (lengthRow <= 0) {
+            throw std::underflow_error("invalid length value");
+        }
+
+        this->items = new ArraySequence<T>[1];
+
+        for (int i = 0; i < lengthRow; i++) {
+            this->items[0].Append(newRow[i]);
         }
     }
-
-    delete[] this->items;
-    this->items = newItems;
 }
 
 template<typename T>
 void ArrayTriangleMatrix<T>::AddColumn(T* newColumn) {
-    ArraySequence<T>* newItems = new ArraySequence<T>[this->GetDimension() + 1];
+    if (!(this->items)) {
+        ArraySequence<T>* newItems = new ArraySequence<T>[this->GetDimension() + 1];
 
-    for (int i = 0; i <= this->GetDimension(); i++) {
-        for (int j = i; j < this->GetDimension(); j++) {
-            newItems[i].Append(this->Get(i, j));
+        for (int i = 0; i <= this->GetDimension(); i++) {
+            for (int j = i; j < this->GetDimension(); j++) {
+                newItems[i].Append(this->Get(i, j));
+            }
         }
-    }
 
-    for (int i = 0; i <= this->GetDimension(); i++) {
-        newItems[i].Append(newColumn[i]);
-    }
+        for (int i = 0; i <= this->GetDimension(); i++) {
+            newItems[i].Append(newColumn[i]);
+        }
 
-    delete[] this->items;
-    this->items = newItems;
+        delete[] this->items;
+        this->items = newItems;
+    } else {
+        this->items = new ArraySequence<T>[1];
+        this->items[0].Append(newColumn[0]);
+    }
 }
 
 template<typename T>
 void ArrayTriangleMatrix<T>::MultScalar(T scalar) {
+     if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (!(scalar)) {
         throw std::invalid_argument("invalid value");
     }
@@ -160,6 +189,10 @@ void ArrayTriangleMatrix<T>::MultScalar(T scalar) {
 
 template<typename T>
 void ArrayTriangleMatrix<T>::AddMatrix(ArrayTriangleMatrix<T>* triangleMatrix) {
+     if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+    
     if (this->GetDimension() != triangleMatrix->GetDimension()) {
         throw std::invalid_argument("the number of rows in the matrix does not match");
     }

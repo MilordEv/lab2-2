@@ -13,7 +13,7 @@ class ListTriangleMatrix {
     public:
         ListTriangleMatrix(int dimension, T** items);
         ListTriangleMatrix();
-        ListTriangleMatrix(const ListTriangleMatrix<T> &squarearMatrix);
+        ListTriangleMatrix(const ListTriangleMatrix<T> &triangleMatrix);
         ~ListTriangleMatrix();
 
         size_t GetDimension() const; 
@@ -23,7 +23,7 @@ class ListTriangleMatrix {
         void AddColumn(T* newColumn);
 
         void MultScalar(T scalar);
-        void AddMatrix(ListTriangleMatrix<T>* rectangularMatrix);
+        void AddMatrix(ListTriangleMatrix<T>* triangleMatrix);
 
         T GetNorm();
 
@@ -47,12 +47,12 @@ ListTriangleMatrix<T>::ListTriangleMatrix() {
 }
 
 template<typename T>
-ListTriangleMatrix<T>::ListTriangleMatrix(const ListTriangleMatrix<T> &squarearMatrix) {
+ListTriangleMatrix<T>::ListTriangleMatrix(const ListTriangleMatrix<T> &triangleMatrix) {
     this->items = new ListSequence<T>[squarearMatrix.GetDimension()];
 
-    for (int i = 0; i < squarearMatrix.GetDimension(); i++) {
-        for (int j = i; j < squarearMatrix.GetDimension(); j++) {
-            (this->items)[i].Append(squarearMatrix.Get(i, j));
+    for (int i = 0; i < triangleMatrix.GetDimension(); i++) {
+        for (int j = i; j < triangleMatrix.GetDimension(); j++) {
+            (this->items)[i].Append(triangleMatrix.Get(i, j));
         }
     }
 }
@@ -84,11 +84,16 @@ ListTriangleMatrix<T>::~ListTriangleMatrix() {
 
 template<typename T>
 size_t ListTriangleMatrix<T>::GetDimension() const {
+    if (!(this->items)) {
+        return 0;
+    }
+
     return (this->items)[0].GetLength();
 }
 
 template<typename T>
 T ListTriangleMatrix<T>::Get(int indexRow, int indexColumn) const {
+
     if (!(this->items)) {
         throw std::domain_error("Empty matrix")
     }
@@ -110,42 +115,67 @@ T ListTriangleMatrix<T>::Get(int indexRow, int indexColumn) const {
 
 template<typename T>
 void ListTriangleMatrix<T>::AddRow(T* newRow) {
-    ListSequence<T>* newItems = new ListSequence<T>[this->GetDimension() + 1];
+    if (this->items) {
+        ListSequence<T>* newItems = new ListSequence<T>[this->GetDimension() + 1];
 
-    for (int i = 0; i <= this->GetDimension(); i++) {
-        newItems[0].Append(newRow[i]);
-    }
+        for (int i = 0; i <= this->GetDimension(); i++) {
+            newItems[0].Append(newRow[i]);
+        }
 
-    for (int i = 1; i <= this->GetDimension(); i++) {
-        for (int j = i; j <= this->GetDimension(); j++) {
-            newItems[i].Append(this->Get(i - 1, j - 1));
+        for (int i = 1; i <= this->GetDimension(); i++) {
+            for (int j = i; j <= this->GetDimension(); j++) {
+                newItems[i].Append(this->Get(i - 1, j - 1));
+            }
+        }
+
+        delete[] this->items;
+        this->items = newItems;
+    } else {
+        int lengthRow = 0;
+        std::cout << "Enter the length of the row: ";
+        std::cin >> lengthRow;
+
+        if (lengthRow <= 0) {
+            throw std::underflow_error("invalid length value");
+        }
+
+        this->items = new ListSequence<T>[1];
+
+        for (int i = 0; i < lengthRow; i++) {
+            this->items[0].Append(newRow[i]);
         }
     }
-
-    delete[] this->items;
-    this->items = newItems;
 }
 
 template<typename T>
 void ListTriangleMatrix<T>::AddColumn(T* newColumn) {
-    ListSequence<T>* newItems = new ListSequence<T>[this->GetDimension() + 1];
+    if (!(this->items)) {
+        ListSequence<T>* newItems = new ListSequence<T>[this->GetDimension() + 1];
 
-    for (int i = 0; i <= this->GetDimension(); i++) {
-        for (int j = i; j < this->GetDimension(); j++) {
-            newItems[i].Append(this->Get(i, j));
+        for (int i = 0; i <= this->GetDimension(); i++) {
+            for (int j = i; j < this->GetDimension(); j++) {
+                newItems[i].Append(this->Get(i, j));
+            }
         }
-    }
 
-    for (int i = 0; i <= this->GetDimension(); i++) {
-        newItems[i].Append(newColumn[i]);
-    }
+        for (int i = 0; i <= this->GetDimension(); i++) {
+            newItems[i].Append(newColumn[i]);
+        }
 
-    delete[] this->items;
-    this->items = newItems;
+        delete[] this->items;
+        this->items = newItems;
+    } else {
+        this->items = new ListSequence<T>[1];
+        this->items[0].Append(newColumn[0]);
+    }
 }
 
 template<typename T>
 void ListTriangleMatrix<T>::MultScalar(T scalar) {
+     if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (!(scalar)) {
         throw std::invalid_argument("invalid value");
     }
@@ -158,14 +188,18 @@ void ListTriangleMatrix<T>::MultScalar(T scalar) {
 }
 
 template<typename T>
-void ListTriangleMatrix<T>::AddMatrix(ListTriangleMatrix<T>* rectangularMatrix) {
-    if (this->GetDimension() != rectangularMatrix->GetDimension()) {
+void ListTriangleMatrix<T>::AddMatrix(ListTriangleMatrix<T>* triangleMatrix) {
+     if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+    
+    if (this->GetDimension() != triangleMatrix->GetDimension()) {
         throw std::invalid_argument("the number of rows in the matrix does not match");
     }
 
     for (int i = 0; i < this->GetDimension(); i++) {
         for (int j = i; j < this->GetDimension(); j++) {
-            this->items[i].Set(this->Get(i, j) + rectangularMatrix->Get(i, j), j - i);
+            this->items[i].Set(this->Get(i, j) + triangleMatrix->Get(i, j), j - i);
         }
     }
 } 

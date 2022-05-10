@@ -98,8 +98,8 @@ void ListSequence<T>::Set(T item, int index) {
         throw std::out_of_range("Out of the range of the array");
     }
 
-    this->Remove(index);
     this->InsertAt(item, index);
+    this->Remove(index + 1);
 }
 
 

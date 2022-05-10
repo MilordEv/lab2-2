@@ -100,18 +100,26 @@ ListRectangularMatrix<T>::~ListRectangularMatrix() {
 
 template<typename T>
 size_t ListRectangularMatrix<T>::GetNumberRows() const {
+    if (!(this->items)) {
+        return 0;
+    }
+
     return this->numberRows;
 }
 
 template<typename T>
 size_t ListRectangularMatrix<T>::GetNumberColumns() const {
+    if (!(this->items)) {
+        return 0;
+    }
+
     return (this->items)[0].GetLength();
 }
 
 template<typename T>
 T ListRectangularMatrix<T>::Get(int indexRow, int indexColumn) const {
     if (!(this->items)) {
-        throw std::domain_error("Empty matrix")
+        throw std::domain_error("Empty matrix");
     }
 
     if (indexRow >= this->numberRows || indexRow < 0) {
@@ -127,57 +135,96 @@ T ListRectangularMatrix<T>::Get(int indexRow, int indexColumn) const {
 
 template<typename T>
 void ListRectangularMatrix<T>::AddRow(T* newRow, int indexRow) {
-    if (indexRow > this->numberRows || indexRow < 0) {
-        throw std::out_of_range("Out of the range of the array");
-    }
 
-    ListSequence<T>* oldItems = new ListSequence<T>[this->numberRows];
+    if (this->items) {
 
-    for (int i = 0; i < this->numberRows; i++) {
-        for (int j = 0; j < this->GetNumberColumns(); j++) {
-            oldItems[i].Append(this->Get(i, j));
+        if (indexRow > this->numberRows || indexRow < 0) {
+            throw std::out_of_range("Out of the range of the array");
+
+        }
+
+        ListSequence<T>* oldItems = new ListSequence<T>[this->numberRows];
+
+        for (int i = 0; i < this->numberRows; i++) {
+            for (int j = 0; j < this->GetNumberColumns(); j++) {
+                oldItems[i].Append(this->Get(i, j));
+            }
+        }
+
+        int numberColumn = this->GetNumberColumns();
+        delete[] this->items;
+        this->items = new ListSequence<T>[this->numberRows + 1];
+        
+        for (int i = 0; i < indexRow; i++) {
+            for (int j = 0; j < numberColumn; j++) {
+                (this->items)[i].Append(oldItems[i].Get(j));
+            }
+        }
+
+        for (int i = 0; i < numberColumn; i++) {
+                (this->items)[indexRow].Append(newRow[i]);
+        }
+
+        for (int i = indexRow + 1; i < this->numberRows + 1; i++) {
+            for (int j = 0; j < numberColumn; j++) {
+                (this->items)[i].Append(oldItems[i-1].Get(j));
+            }
+        }
+
+        this->numberRows += 1;
+
+        delete[] oldItems;
+
+    } else {
+        int lengthRow = 0;
+        std::cout << "Enter the length of the row: ";
+        std::cin >> lengthRow;
+
+        if (lengthRow <= 0) {
+            throw std::underflow_error("invalid length value");
+        }
+
+        this->items = new ListSequence<T>[1];
+
+        for (int i = 0; i < lengthRow; i++) {
+            this->items[0].Append(newRow[i]);
         }
     }
-
-    int numberColumn = this->GetNumberColumns();
-    delete[] this->items;
-    this->items = new ListSequence<T>[this->numberRows + 1];
-    
-    for (int i = 0; i < indexRow; i++) {
-        for (int j = 0; j < numberColumn; j++) {
-            (this->items)[i].Append(oldItems[i].Get(j));
-        }
-    }
-
-    for (int i = 0; i < numberColumn; i++) {
-            (this->items)[indexRow].Append(newRow[i]);
-    }
-
-    for (int i = indexRow + 1; i < this->numberRows + 1; i++) {
-        for (int j = 0; j < numberColumn; j++) {
-            (this->items)[i].Append(oldItems[i-1].Get(j));
-        }
-    }
-
-    this->numberRows += 1;
-
-    delete[] oldItems;
 }
-
 
 template<typename T>
 void ListRectangularMatrix<T>::AddColumn(T* newColumn, int indexColumn) {
-    if (indexColumn > this->GetNumberColumns() || indexColumn < 0) {
-        throw std::out_of_range("Out of the range of the array");
-    }
+    if (this->items) { 
+        if (indexColumn > this->GetNumberColumns() || indexColumn < 0) {
+            throw std::out_of_range("Out of the range of the array");
+        }
 
-    for (int i = 0; i < this->numberRows; i++) {
-        (this->items)[i].InsertAt(newColumn[i], indexColumn);
+        for (int i = 0; i < this->numberRows; i++) {
+            (this->items)[i].InsertAt(newColumn[i], indexColumn);
+        }
+    } else {
+        int lengthColumn = 0;
+        std::cout << "Enter the length of the column: ";
+        std::cin >> lengthColumn;
+
+        if (lengthColumn <= 0) {
+            throw std::underflow_error("invalid length value");
+        }
+
+        this->items = new ListSequence<T>[lengthColumn];
+
+        for (int i = 0; i < lengthColumn; i++) {
+            this->items[i].Append(newColumn[i]);
+        }
     }
 }
 
 template<typename T>
 void ListRectangularMatrix<T>::MultRow(int numberRow, T scalar) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (numberRow > this->numberRows || numberRow < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -193,6 +240,10 @@ void ListRectangularMatrix<T>::MultRow(int numberRow, T scalar) {
 
 template<typename T>
 void ListRectangularMatrix<T>::MultColumn(int numberColumn, T scalar) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (numberColumn > this->GetNumberColumns() || numberColumn < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -208,6 +259,10 @@ void ListRectangularMatrix<T>::MultColumn(int numberColumn, T scalar) {
 
 template<typename T>
 void ListRectangularMatrix<T>::AddRowByRow(int indexRowWhereAdd, int indexRowWhicheAdd, T coefficient) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (indexRowWhereAdd >= this->numberRows || indexRowWhereAdd < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -227,6 +282,10 @@ void ListRectangularMatrix<T>::AddRowByRow(int indexRowWhereAdd, int indexRowWhi
 
 template<typename T>
 void ListRectangularMatrix<T>::AddColumnByColumn(int indexColumnWhereAdd, int indexColumnWhicheAdd, T coefficient) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (indexColumnWhereAdd >= this->GetNumberColumns() || indexColumnWhereAdd < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -246,6 +305,10 @@ void ListRectangularMatrix<T>::AddColumnByColumn(int indexColumnWhereAdd, int in
 
 template<typename T>
 void ListRectangularMatrix<T>::SwapRows(int indexFirstRow, int indexSecondRow) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (indexFirstRow >= this->numberRows || indexFirstRow < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
@@ -268,11 +331,15 @@ void ListRectangularMatrix<T>::SwapRows(int indexFirstRow, int indexSecondRow) {
 
 template<typename T>
 void ListRectangularMatrix<T>::SwapColumns(int indexFirstColumn, int indexSecondColumn) {
-    if (indexFirstColumn >= this->numberRows || indexFirstColumn < 0) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
+    if (indexFirstColumn >= this->GetNumberColumns() || indexFirstColumn < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
 
-    if (indexSecondColumn >= this->numberRows || indexSecondColumn < 0) {
+    if (indexSecondColumn >= this->GetNumberColumns() || indexSecondColumn < 0) {
         throw std::out_of_range("Out of the range of the array");
     }
 
@@ -290,6 +357,10 @@ void ListRectangularMatrix<T>::SwapColumns(int indexFirstColumn, int indexSecond
 
 template<typename T>
 void ListRectangularMatrix<T>::MultScalar(T scalar) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (!(scalar)) {
         throw std::invalid_argument("invalid value");
     }
@@ -303,6 +374,10 @@ void ListRectangularMatrix<T>::MultScalar(T scalar) {
 
 template<typename T>
 void ListRectangularMatrix<T>::AddMatrix(ListRectangularMatrix<T>* rectangularMatrix) {
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
+    }
+
     if (this->numberRows != rectangularMatrix->numberRows) {
         throw std::invalid_argument("the number of rows in the matrix does not match");
     }
@@ -320,8 +395,8 @@ void ListRectangularMatrix<T>::AddMatrix(ListRectangularMatrix<T>* rectangularMa
 
 template<typename T>
 T ListRectangularMatrix<T>::GetNorm() {
-    if (!(this->GetNumberRows())) {
-        throw std::domain_error("empty matrix");
+    if (!(this->items)) {
+        throw std::domain_error("Empty matrix");
     }
 
     T valueNorm = this->Get(0, 0);
@@ -337,5 +412,6 @@ T ListRectangularMatrix<T>::GetNorm() {
 
     return pow(valueNorm, 0.5);
 }
+
 
 #endif
