@@ -27,7 +27,7 @@ class ArraySequence : public Sequence<T> {
         void Prepend(T item) override;
         void InsertAt(T item, int index) override;
         void Remove(int index) override;
-        ArraySequence<T>* Concat(Sequence <T> *list) override;
+        ArraySequence<T>* Concat(Sequence<T> *list) override;
 
         ~ArraySequence();
 };
@@ -148,11 +148,13 @@ void ArraySequence<T>::Append(T item) {
 template<typename T>
 void ArraySequence<T>::Prepend(T item) {
     if (this->count >= this->items->GetSize()) {
+
         if (!(this->count)) {
             this->items->Resize(2);
-        }
 
-        this->items->Resize(2 * this->count);
+        } else {
+            this->items->Resize(2 * this->count);
+        }
     }
 
     for (int i = this->count; i > 0; i--) {
