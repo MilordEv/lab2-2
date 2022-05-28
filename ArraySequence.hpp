@@ -29,6 +29,10 @@ class ArraySequence : public Sequence<T> {
         void Remove(int index) override;
         ArraySequence<T>* Concat(Sequence<T> *list) override;
 
+        Sequence<T>* Map(T func(T)) override;
+        Sequence<T>* Where(bool func(T)) override;
+        T Reduce(T func(T, T), T startValue) override;
+
         ~ArraySequence();
 };
 
@@ -218,6 +222,38 @@ ArraySequence<T>* ArraySequence<T>::Concat(Sequence<T> *list) {
 
     this->count += list->GetLength();
     return this;
+}
+
+template<typename T>
+Sequence<T>* ArraySequence<T>::Map(T func(T)) {
+    ArraySequence<T>* arraySequence = new ArraySequence<T>;
+    for (int i = 0; i < this->GetLength(); i++) {
+        arraySequence->Append(func(this->Get(i)));
+    }
+
+    return arraySequence;
+}
+
+template<typename T>
+Sequence<T>* ArraySequence<T>::Where(bool func(T)) {
+    ArraySequence<T>* arraySequence = new ArraySequence<T>;
+    for (int i = 0; i < this->GetLength(); i++) {
+        if (func(this->Get(i))) {
+            arraySequence->Append(this->Get(i));
+        }
+    }
+
+    return arraySequence;
+}
+
+template<typename T>
+T ArraySequence<T>::Reduce(T func(T, T), T startValue) {
+    T value = startValue;
+    for (int i = this->GetLength() - 1; i >= 0; i--) {
+        value = func(this->Get(i), value);
+    }
+
+    return value;
 }
 
 #endif

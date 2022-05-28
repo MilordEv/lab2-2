@@ -17,6 +17,10 @@ class Sequence {
         virtual void Remove(int index) = 0;
         virtual Sequence<T>* Concat(Sequence<T> *list) = 0;
 
+        virtual Sequence<T>* Map(T func(T)) = 0;
+        virtual Sequence<T>* Where(bool func(T)) = 0;
+        virtual T Reduce(T func(T, T), T startValue) = 0;
+
         virtual ~Sequence() {};
 };
 

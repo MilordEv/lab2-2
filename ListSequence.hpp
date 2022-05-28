@@ -28,6 +28,10 @@ class ListSequence : public Sequence<T> {
         void Remove(int index) override;
         ListSequence<T>* Concat(Sequence<T> *list) override;
 
+        Sequence<T>* Map(T func(T)) override;
+        Sequence<T>* Where(bool func(T)) override;
+        T Reduce(T func(T, T), T startValue) override;
+
         ~ListSequence();
 };
 
@@ -137,5 +141,36 @@ ListSequence<T>* ListSequence<T>::Concat(Sequence<T> *list) {
     return this;
 }
         
+template<typename T>
+Sequence<T>* ListSequence<T>::Map(T func(T)) {
+    ListSequence<T>* listSequence = new ListSequence<T>;
+    for (int i = 0; i < this->GetLength(); i++) {
+        listSequence->Append(func(this->Get(i)));
+    }
+
+    return listSequence;
+}
+
+template<typename T>
+Sequence<T>* ListSequence<T>::Where(bool func(T)) {
+    ListSequence<T>* listSequence = new ListSequence<T>;
+    for (int i = 0; i < this->GetLength(); i++) {
+        if (func(this->Get(i))) {
+            listSequence->Append(this->Get(i));
+        }
+    }
+
+    return listSequence;
+}
+
+template<typename T>
+T ListSequence<T>::Reduce(T func(T, T), T startValue) {
+    T value = startValue;
+    for (int i = this->GetLength() - 1; i >= 0; i--) {
+        value = func(this->Get(i), value);
+    }
+
+    return value;
+}
 
 #endif
