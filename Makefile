@@ -4,7 +4,7 @@ CFLAGS = -c -Wall
 
 LDFLAGS =
 
-SRCS = mainMenu.cpp testATD.cpp testRectangularMatrix.cpp testSquareMatrix.cpp testTriangleMatrix.cpp testDiagonalMatrix.cpp
+SRCS = mainMenu.cpp testATD.cpp testRectangularMatrix.cpp testSquareMatrix.cpp testTriangleMatrix.cpp testDiagonalMatrix.cpp testVector.cpp
 
 OBJS = $(SRCS:.c=.o)
 

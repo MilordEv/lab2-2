@@ -4,6 +4,7 @@
 #include "testSquareMatrix.h"
 #include "testTriangleMatrix.h"
 #include "testDiagonalMatrix.h"
+#include "testVector.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ int main() {
         cout << "\t3 - To test square matrix" << endl; 
         cout << "\t4 - To test triangle matrix" << endl; 
         cout << "\t5 - To test diagonal matrix" << endl; 
+        cout << "\t6 - To test vector" << endl; 
         cout << "\t0 - To exit the program" << endl; 
         cout << endl << "Enter: ";
 
@@ -44,6 +46,10 @@ int main() {
 
             case 5:
                 DiagonalMatrix();
+                break;
+
+            case 6:
+                Vector();
                 break;
                 
             case 0:
